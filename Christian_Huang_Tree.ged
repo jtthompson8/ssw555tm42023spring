@@ -1,0 +1,245 @@
+0 NOTE https://github.com/jtthompson8/ssw555tm42023spring
+0 HEAD
+1 SOUR Family Echo
+2 WWW http://www.familyecho.com/
+1 FILE My Family
+1 DATE 1 FEB 2023
+1 DEST ANSTFILE
+1 GEDC
+2 VERS 5.5.1
+2 FORM LINEAGE-LINKED
+1 SUBM @I1@
+2 NAME Miriam Salamanca
+1 SUBN
+1 CHAR UTF-8
+0 @I1@ INDI
+1 NAME Miriam /Martínez/
+2 GIVN Miriam
+2 SURN Martínez
+2 _MARNM Salamanca
+1 SEX F
+1 BIRT
+2 DATE 4 AUG 1918
+1 DEAT Y
+2 DATE 3 JUN 1998
+1 FAMS @F1@
+0 @I2@ INDI
+1 NAME Carlos /Salamanca/
+2 GIVN Carlos
+2 SURN Salamanca
+2 _MARNM Salamanca
+1 SEX M
+1 BIRT
+2 DATE 7 JUL 1920
+1 DEAT Y
+2 DATE 8 JUL 2000
+1 FAMS @F1@
+0 @I3@ INDI
+1 NAME Hector /Salamanca/
+2 GIVN Hector
+2 SURN Salamanca
+2 _MARNM Salamanca
+1 SEX M
+1 BIRT
+2 DATE 6 MAY 1939
+1 FAMS @F2@
+1 FAMC @F1@
+0 @I4@ INDI
+1 NAME Skylar /White/
+2 GIVN Skylar
+2 SURN White
+2 _MARNM Salamanca
+1 SEX F
+1 BIRT
+2 DATE 4 JUN 1940
+1 FAMS @F2@
+0 @I5@ INDI
+1 NAME Eduardo /Salamanca/
+2 GIVN Eduardo
+2 SURN Salamanca
+2 _MARNM Salamanca
+1 SEX M
+1 BIRT
+2 DATE 5 JUN 1945
+1 FAMS @F3@
+1 FAMS @F4@
+1 FAMC @F1@
+0 @I6@ INDI
+1 NAME Jane /Margolis/
+2 GIVN Jane
+2 SURN Margolis
+2 _MARNM Salamanca
+1 SEX F
+1 BIRT
+2 DATE 3 JUN 1946
+1 FAMS @F3@
+0 @I7@ INDI
+1 NAME Marco /Salamanca/
+2 GIVN Marco
+2 SURN Salamanca
+2 _MARNM Salamanca
+1 SEX M
+1 BIRT
+2 DATE 5 MAY 1942
+1 FAMS @F5@
+1 FAMS @F6@
+1 FAMC @F1@
+0 @I8@ INDI
+1 NAME Marie /Schrader/
+2 GIVN Marie
+2 SURN Schrader
+2 _MARNM Salamanca
+1 SEX F
+1 BIRT
+2 DATE 5 JUN 1943
+1 FAMS @F5@
+0 @I9@ INDI
+1 NAME Tuco /Salamanca/
+2 GIVN Tuco
+2 SURN Salamanca
+2 _MARNM Salamanca
+1 SEX M
+1 BIRT
+2 DATE 4 JUL 1969
+1 FAMC @F2@
+0 @I10@ INDI
+1 NAME Gonzo /Salamanca/
+2 GIVN Gonzo
+2 SURN Salamanca
+2 _MARNM Salamanca
+1 SEX M
+1 BIRT
+2 DATE 6 JUL 1970
+1 FAMC @F2@
+0 @I11@ INDI
+1 NAME Lalo /Salamanca/
+2 GIVN Lalo
+2 SURN Salamanca
+2 _MARNM Salamanca
+1 SEX M
+1 BIRT
+2 DATE 6 MAY 1970
+1 FAMC @F5@
+0 @I12@ INDI
+1 NAME Gretchen /Salamanca/
+2 GIVN Gretchen
+2 SURN Salamanca
+2 _MARNM Salamanca
+1 SEX F
+1 BIRT
+2 DATE 5 AUG 1971
+1 FAMS @F7@
+1 FAMC @F3@
+0 @I13@ INDI
+1 NAME Walter /White/
+2 GIVN Walter
+2 SURN White
+2 _MARNM White
+1 SEX M
+1 BIRT
+2 DATE 7 SEP 1972
+1 FAMS @F7@
+1 FAMC @F8@
+0 @I14@ INDI
+1 NAME Andrea /Cantillo/
+2 GIVN Andrea
+2 SURN Cantillo
+2 _MARNM Salamanca
+1 SEX F
+1 BIRT
+2 DATE 9 APR 1942
+1 DEAT Y
+2 DATE 7 JUL 1969
+1 FAMS @F6@
+0 @I15@ INDI
+1 NAME Francesca /Liddy/
+2 GIVN Francesca
+2 SURN Liddy
+2 _MARNM Liddy
+1 SEX F
+1 BIRT
+2 DATE 7 JUN 1944
+1 FAMS @F4@
+0 @I16@ INDI
+1 NAME Leonel /Salamanca/
+2 GIVN Leonel
+2 SURN Salamanca
+2 _MARNM Salamanca
+1 SEX M
+1 BIRT
+2 DATE 5 JUL 1961
+1 FAMC @F4@
+0 @F1@ FAM
+1 HUSB @I2@
+1 WIFE @I1@
+1 CHIL @I3@
+1 CHIL @I5@
+1 CHIL @I7@
+1 MARR
+2 DATE 6 MAY 1938
+2 PLAC Mexico City, Mexico
+1 _CURRENT Y
+1 _PRIMARY Y
+0 @F2@ FAM
+1 HUSB @I3@
+1 WIFE @I4@
+1 CHIL @I9@
+1 CHIL @I10@
+1 MARR
+2 DATE 4 MAY 1959
+2 PLAC Albuquerque, New Mexico
+1 _CURRENT Y
+1 _PRIMARY Y
+0 @F3@ FAM
+1 HUSB @I5@
+1 WIFE @I6@
+1 CHIL @I12@
+1 MARR
+2 DATE 11 MAR 1972
+2 PLAC Roswell, New Mexico
+1 _CURRENT Y
+1 _PRIMARY Y
+0 @F4@ FAM
+1 HUSB @I5@
+1 WIFE @I15@
+1 CHIL @I16@
+1 MARR
+2 DATE 4 MAY 1960
+2 PLAC Deming, New Mexico
+1 DIV
+2 DATE 8 APR 1971
+1 _CURRENT N
+1 _PRIMARY N
+0 @F5@ FAM
+1 HUSB @I7@
+1 WIFE @I8@
+1 CHIL @I11@
+1 MARR
+2 DATE 5 JUN 1970
+2 PLAC Santa Fe, New Mexico
+1 _CURRENT Y
+1 _PRIMARY Y
+0 @F6@ FAM
+1 HUSB @I7@
+1 WIFE @I14@
+1 MARR
+2 DATE 4 JUN 1960
+2 PLAC Las Cruces, New Mexico
+1 EVEN
+2 TYPE Ending
+2 DATE 6 JUN 1969
+1 _CURRENT N
+1 _PRIMARY N
+0 @F7@ FAM
+1 HUSB @I13@
+1 WIFE @I12@
+1 EVEN
+2 TYPE Relationship
+2 DATE 6 AUG 1990
+1 _CURRENT Y
+1 _PRIMARY Y
+0 @F8@ FAM
+1 CHIL @I13@
+1 _CURRENT N
+1 _PRIMARY N
+0 TRLR
