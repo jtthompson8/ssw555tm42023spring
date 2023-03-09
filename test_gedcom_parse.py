@@ -1,7 +1,7 @@
 import unittest
 from datetime import datetime
 import pymongo
-from gedcom_parse import readGEDCOM, printIndividuals, printFamilies, checkBirthBeforeDeath, checkMarriageBeforeDivorce, checkMarriageBeforeDeath, checkDivorceBeforeDeath, checkOver150, checkBirthBeforeMarriageAfterDivorce
+from gedcom_parse import readGEDCOM, printIndividuals, printFamilies, checkBirthBeforeDeath, checkMarriageBeforeDivorce, checkMarriageBeforeDeath, checkDivorceBeforeDeath, checkOver150, checkDatesBeforeCurrent, checkBirthBeforeMarriageAfterDivorce, checkBirthBeforeMarriage
 
 
 class TestGEDCOMParse(unittest.TestCase):
@@ -57,7 +57,7 @@ class TestGEDCOMParse(unittest.TestCase):
         self.assertEqual(checkDivorceBeforeDeath(mydb), res,
                          'result does not match expected result for date check of divorce after death')
 
-def test_birth_before_marriage(self):
+    def test_birth_before_marriage(self):
         myclient = pymongo.MongoClient(
             "mongodb://localhost:27017")
         mydb = myclient["db"]
@@ -66,7 +66,7 @@ def test_birth_before_marriage(self):
         self.assertEqual(checkBirthBeforeMarriage(mydb), res,
                          'result does not match expected result for checking date against the current date')
 
-def test_date_before_current_date(self):
+    def test_date_before_current_date(self):
         myclient = pymongo.MongoClient(
             "mongodb://localhost:27017")
         mydb = myclient["db"]
