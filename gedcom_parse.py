@@ -6,10 +6,11 @@ import calendar
 
 
 myclient = pymongo.MongoClient("mongodb+srv://Christian:6TYXxCt9Sp9GDO20@cluster0.iilq4vg.mongodb.net/?retryWrites=true&w=majority")
+mydb = myclient["db"]
 
 
-def readGEDCOM(file, db):
-    mydb = myclient["db"]
+def readGEDCOM(file, mydb):
+    res = []
     mycol = mydb["Individuals"]
     mycol2 = mydb["Families"]
 
@@ -25,9 +26,11 @@ def readGEDCOM(file, db):
     with open(file, 'r') as ged:
         for line in ged:
             info = line.strip().split(' ', 2)
-            print(info)
+            # print(info)
+            res.append(info)
             #lvl, tag, args
-            print("--> " + line.strip())
+            # print("--> " + line.strip())
+            res.append("--> " + line.strip())
             valid = 'N'
             if info[1] in tags:
                 valid = 'Y'
@@ -51,9 +54,11 @@ def readGEDCOM(file, db):
                         dic = {}
                         dic["id"] = info[1]
                     valid = 'Y'
-                    print("<-- " + info[0] + "|" + info[1] + "|" + valid + "|" + info[2])
+                    # print("<-- " + info[0] + "|" + info[1] + "|" + valid + "|" + info[2])
+                    res.append("<-- " + info[0] + "|" + info[1] + "|" + valid + "|" + info[2])
                 else:
-                    print("<-- " + info[0] + "|" + info[1] + "|" + valid + "|" + info[2])
+                    # print("<-- " + info[0] + "|" + info[1] + "|" + valid + "|" + info[2])
+                    res.append("<-- " + info[0] + "|" + info[1] + "|" + valid + "|" + info[2])
                     if birthDate:
                         dic["BIRTHDATE"] = info[2]
                         birthDate = False
@@ -74,14 +79,17 @@ def readGEDCOM(file, db):
                     birthDate = True
                 elif info[1] == "DIV":
                     divDate = True
-                print("<-- " + info[0] + "|" + info[1] + "|" + valid)
+                # print("<-- " + info[0] + "|" + info[1] + "|" + valid)
+                res.append("<-- " + info[0] + "|" + info[1] + "|" + valid)
+    return res
 
-def printIndividuals(db):
-    mydb = myclient["db"]
+def printIndividuals(mydb):
+    ret = []
     mycol = mydb["Individuals"]
     x = PrettyTable()
     x.field_names = ["ID", "Name", "Gender", "Birthday", "Age", "Dead", "Death", "Child", "Spouse"]
-    print("Individuals")
+    # print("Individuals")
+    ret.append("Individuals")
     cursor = mycol.find({})
     for doc in cursor:
         if "DEATHDATE" in doc:
@@ -103,14 +111,17 @@ def printIndividuals(db):
         else:
             children = "N/A"
         x.add_row([doc["id"], doc["NAME"], doc["SEX"], doc["BIRTHDATE"], age, dead, date, children, spouse])  
-    print(x)
+    # print(x)
+    ret.append(x)
+    return ret
 
-def printFamilies(db):
-    mydb = myclient["db"]
+def printFamilies(mydb):
+    ret = []
     mycol2 = mydb["Families"]
     y = PrettyTable()
     y.field_names = ["ID", "Married", "Divorced", "Husband ID", "Wif ID", "Children"]
-    print("Families")
+    # print("Families")
+    ret.append("Families")
     cursor2 = mycol2.find({})
     for doc in cursor2:
         if "DIVDATE" in doc:
@@ -134,11 +145,13 @@ def printFamilies(db):
         else:
             date = "N/A"
         y.add_row([doc["id"], date, div, husb, wife, child])  
-    print(y)
+    # print(y)
+    ret.append(y)
+    return ret
 
 # check Marriage before death
-def checkMarriageBeforeDeath(db):
-    mydb = myclient["db"]
+def checkMarriageBeforeDeath(mydb):
+    ret = []
     mycol = mydb["Individuals"]
     mycol2 = mydb["Families"]
     cursor2 = mycol2.find({})
@@ -154,16 +167,19 @@ def checkMarriageBeforeDeath(db):
                 hubdied = hubDoc['DEATHDATE']
                 hubdied_object = datetime.strptime(hubdied, '%d %b %Y').date()
                 if marDate_object > hubdied_object:
-                    print("Error " +  doc["id"] + ":Marriage date of " + hubDoc["NAME"] + " (" + hubDoc["id"] +") occurs before his death date.")
+                    # print("Error " +  doc["id"] + ":Marriage date of " + hubDoc["NAME"] + " (" + hubDoc["id"] +") occurs after his death date.")
+                    ret.append("Error " +  doc["id"] + ":Marriage date of " + hubDoc["NAME"] + " (" + hubDoc["id"] +") occurs after his death date.")
             if 'DEATHDATE' in wifeDoc:
                 wifdied = wifeDoc['DEATHDATE']
                 wifdied_object = datetime.strptime(wifdied, '%d %b %Y').date()
                 if marDate_object > wifdied_object:
-                    print("Error " +  doc["id"] + ":Marriage date of " + wifeDoc["NAME"] + " (" + wifeDoc["id"] +") occurs before her death date.")
+                    # print("Error " +  doc["id"] + ":Marriage date of " + wifeDoc["NAME"] + " (" + wifeDoc["id"] +") occurs after her death date.")
+                    ret.append("Error " +  doc["id"] + ":Marriage date of " + wifeDoc["NAME"] + " (" + wifeDoc["id"] +") occurs after her death date.")
+    return ret
             
 # check Divorce before death
-def checkDivorceBeforeDeath(db):
-    mydb = myclient["db"]
+def checkDivorceBeforeDeath(mydb):
+    ret = []
     mycol = mydb["Individuals"]
     mycol2 = mydb["Families"]
     cursor2 = mycol2.find({})
@@ -179,15 +195,23 @@ def checkDivorceBeforeDeath(db):
                 hubdied = hubDoc['DEATHDATE']
                 hubdied_object = datetime.strptime(hubdied, '%d %b %Y').date()
                 if divDate_object > hubdied_object:
-                    print("Error " +  doc["id"] + ":Divorce date of " + hubDoc["NAME"] + " (" + hubDoc["id"] +") occurs before his death date.")
+                    # print("Error " +  doc["id"] + ":Divorce date of " + hubDoc["NAME"] + " (" + hubDoc["id"] +") occurs after his death date.")
+                    ret.append("Error " +  doc["id"] + ":Divorce date of " + hubDoc["NAME"] + " (" + hubDoc["id"] +") occurs after his death date.")
             if 'DEATHDATE' in wifeDoc:
                 wifdied = wifeDoc['DEATHDATE']
                 wifdied_object = datetime.strptime(wifdied, '%d %b %Y').date()
                 if divDate_object > wifdied_object:
-                    print("Error " +  doc["id"] + ":Divorce date of " + wifeDoc["NAME"] + " (" + wifeDoc["id"] +") occurs before her death date.")
+                    # print("Error " +  doc["id"] + ":Divorce date of " + wifeDoc["NAME"] + " (" + wifeDoc["id"] +") occurs after her death date.")
+                    ret.append("Error " +  doc["id"] + ":Divorce date of " + wifeDoc["NAME"] + " (" + wifeDoc["id"] +") occurs after her death date.")
+    return ret
                     
-readGEDCOM('Christian_Huang_Tree.ged', myclient)
-printIndividuals(myclient)
-printFamilies(myclient)
-checkMarriageBeforeDeath(myclient)
-checkDivorceBeforeDeath(myclient)
+# for x in readGEDCOM('Christian_Huang_Tree.ged', mydb):
+#     print(x)
+# for x in printIndividuals(mydb):
+#     print(x)
+# for x in printFamilies(mydb):
+#     print(x)
+# for x in checkMarriageBeforeDeath(mydb):
+#     print(x)
+# for x in checkDivorceBeforeDeath(mydb):
+#     print(x)
