@@ -4,8 +4,8 @@ from datetime import datetime
 import calendar
 
 
-
-myclient = pymongo.MongoClient("mongodb+srv://Christian:6TYXxCt9Sp9GDO20@cluster0.iilq4vg.mongodb.net/?retryWrites=true&w=majority")
+myclient = pymongo.MongoClient(
+    "mongodb+srv://Christian:6TYXxCt9Sp9GDO20@cluster0.iilq4vg.mongodb.net/?retryWrites=true&w=majority")
 mydb = myclient["db"]
 
 
@@ -14,11 +14,11 @@ def readGEDCOM(file, mydb):
     mycol = mydb["Individuals"]
     mycol2 = mydb["Families"]
 
-    tags = ['INDI','NAME','SEX','BIRT','DEAT','FAMC','FAMS','FAM','MARR','HUSB','WIFE','CHIL','DIV','DATE','HEAD','TRLR','NOTE']
+    tags = ['INDI', 'NAME', 'SEX', 'BIRT', 'DEAT', 'FAMC', 'FAMS', 'FAM',
+            'MARR', 'HUSB', 'WIFE', 'CHIL', 'DIV', 'DATE', 'HEAD', 'TRLR', 'NOTE']
 
     dic = {}
     first_indi = True
-    famDic = {}
     first_fam = True
     birthDate = False
     deathDate = False
@@ -28,7 +28,7 @@ def readGEDCOM(file, mydb):
             info = line.strip().split(' ', 2)
             # print(info)
             res.append(info)
-            #lvl, tag, args
+            # lvl, tag, args
             # print("--> " + line.strip())
             res.append("--> " + line.strip())
             valid = 'N'
@@ -55,10 +55,12 @@ def readGEDCOM(file, mydb):
                         dic["id"] = info[1]
                     valid = 'Y'
                     # print("<-- " + info[0] + "|" + info[1] + "|" + valid + "|" + info[2])
-                    res.append("<-- " + info[0] + "|" + info[1] + "|" + valid + "|" + info[2])
+                    res.append("<-- " + info[0] + "|" +
+                               info[1] + "|" + valid + "|" + info[2])
                 else:
                     # print("<-- " + info[0] + "|" + info[1] + "|" + valid + "|" + info[2])
-                    res.append("<-- " + info[0] + "|" + info[1] + "|" + valid + "|" + info[2])
+                    res.append("<-- " + info[0] + "|" +
+                               info[1] + "|" + valid + "|" + info[2])
                     if birthDate:
                         dic["BIRTHDATE"] = info[2]
                         birthDate = False
@@ -83,11 +85,13 @@ def readGEDCOM(file, mydb):
                 res.append("<-- " + info[0] + "|" + info[1] + "|" + valid)
     return res
 
+
 def printIndividuals(mydb):
     ret = []
     mycol = mydb["Individuals"]
     x = PrettyTable()
-    x.field_names = ["ID", "Name", "Gender", "Birthday", "Age", "Dead", "Death", "Child", "Spouse"]
+    x.field_names = ["ID", "Name", "Gender", "Birthday",
+                     "Age", "Dead", "Death", "Child", "Spouse"]
     # print("Individuals")
     ret.append("Individuals")
     cursor = mycol.find({})
@@ -110,16 +114,19 @@ def printIndividuals(mydb):
             children = doc["FAMC"]
         else:
             children = "N/A"
-        x.add_row([doc["id"], doc["NAME"], doc["SEX"], doc["BIRTHDATE"], age, dead, date, children, spouse])  
+        x.add_row([doc["id"], doc["NAME"], doc["SEX"],
+                  doc["BIRTHDATE"], age, dead, date, children, spouse])
     # print(x)
     ret.append(x)
     return ret
+
 
 def printFamilies(mydb):
     ret = []
     mycol2 = mydb["Families"]
     y = PrettyTable()
-    y.field_names = ["ID", "Married", "Divorced", "Husband ID", "Wif ID", "Children"]
+    y.field_names = ["ID", "Married", "Divorced",
+                     "Husband ID", "Wif ID", "Children"]
     # print("Families")
     ret.append("Families")
     cursor2 = mycol2.find({})
@@ -144,13 +151,15 @@ def printFamilies(mydb):
             date = doc["DATE"]
         else:
             date = "N/A"
-        y.add_row([doc["id"], date, div, husb, wife, child])  
+        y.add_row([doc["id"], date, div, husb, wife, child])
     # print(y)
     ret.append(y)
     return ret
 
-# check Marriage before death
-def checkMarriageBeforeDeath(mydb):
+# check Marriage after death
+
+
+def checkMarriageAfterDeath(mydb):
     ret = []
     mycol = mydb["Individuals"]
     mycol2 = mydb["Families"]
@@ -161,24 +170,29 @@ def checkMarriageBeforeDeath(mydb):
             marDate_object = datetime.strptime(marDate, '%d %b %Y').date()
             husb = doc["HUSB"]
             wife = doc["WIFE"]
-            hubDoc = mycol.find_one({'id' : husb})
-            wifeDoc = mycol.find_one({'id' : wife})
+            hubDoc = mycol.find_one({'id': husb})
+            wifeDoc = mycol.find_one({'id': wife})
             if 'DEATHDATE' in hubDoc:
                 hubdied = hubDoc['DEATHDATE']
                 hubdied_object = datetime.strptime(hubdied, '%d %b %Y').date()
                 if marDate_object > hubdied_object:
                     # print("Error " +  doc["id"] + ":Marriage date of " + hubDoc["NAME"] + " (" + hubDoc["id"] +") occurs after his death date.")
-                    ret.append("Error " +  doc["id"] + ":Marriage date of " + hubDoc["NAME"] + " (" + hubDoc["id"] +") occurs after his death date.")
+                    ret.append("Error " + doc["id"] + ":Marriage date of " + hubDoc["NAME"] +
+                               " (" + hubDoc["id"] + ") occurs after his death date.")
             if 'DEATHDATE' in wifeDoc:
                 wifdied = wifeDoc['DEATHDATE']
                 wifdied_object = datetime.strptime(wifdied, '%d %b %Y').date()
                 if marDate_object > wifdied_object:
                     # print("Error " +  doc["id"] + ":Marriage date of " + wifeDoc["NAME"] + " (" + wifeDoc["id"] +") occurs after her death date.")
-                    ret.append("Error " +  doc["id"] + ":Marriage date of " + wifeDoc["NAME"] + " (" + wifeDoc["id"] +") occurs after her death date.")
+                    ret.append("Error " + doc["id"] + ":Marriage date of " + wifeDoc["NAME"] +
+                               " (" + wifeDoc["id"] + ") occurs after her death date.")
+    print(ret)
     return ret
-            
-# check Divorce before death
-def checkDivorceBeforeDeath(mydb):
+
+# check Divorce after death
+
+
+def checkDivorceAfterDeath(mydb):
     ret = []
     mycol = mydb["Individuals"]
     mycol2 = mydb["Families"]
@@ -189,29 +203,31 @@ def checkDivorceBeforeDeath(mydb):
             divDate_object = datetime.strptime(divDate, '%d %b %Y').date()
             husb = doc["HUSB"]
             wife = doc["WIFE"]
-            hubDoc = mycol.find_one({'id' : husb})
-            wifeDoc = mycol.find_one({'id' : wife})
+            hubDoc = mycol.find_one({'id': husb})
+            wifeDoc = mycol.find_one({'id': wife})
             if 'DEATHDATE' in hubDoc:
                 hubdied = hubDoc['DEATHDATE']
                 hubdied_object = datetime.strptime(hubdied, '%d %b %Y').date()
                 if divDate_object > hubdied_object:
                     # print("Error " +  doc["id"] + ":Divorce date of " + hubDoc["NAME"] + " (" + hubDoc["id"] +") occurs after his death date.")
-                    ret.append("Error " +  doc["id"] + ":Divorce date of " + hubDoc["NAME"] + " (" + hubDoc["id"] +") occurs after his death date.")
+                    ret.append("Error " + doc["id"] + ":Divorce date of " + hubDoc["NAME"] +
+                               " (" + hubDoc["id"] + ") occurs after his death date.")
             if 'DEATHDATE' in wifeDoc:
                 wifdied = wifeDoc['DEATHDATE']
                 wifdied_object = datetime.strptime(wifdied, '%d %b %Y').date()
                 if divDate_object > wifdied_object:
                     # print("Error " +  doc["id"] + ":Divorce date of " + wifeDoc["NAME"] + " (" + wifeDoc["id"] +") occurs after her death date.")
-                    ret.append("Error " +  doc["id"] + ":Divorce date of " + wifeDoc["NAME"] + " (" + wifeDoc["id"] +") occurs after her death date.")
+                    ret.append("Error " + doc["id"] + ":Divorce date of " + wifeDoc["NAME"] +
+                               " (" + wifeDoc["id"] + ") occurs after her death date.")
     return ret
-                    
+
 # for x in readGEDCOM('Christian_Huang_Tree.ged', mydb):
 #     print(x)
 # for x in printIndividuals(mydb):
 #     print(x)
 # for x in printFamilies(mydb):
 #     print(x)
-# for x in checkMarriageBeforeDeath(mydb):
+# for x in checkMarriageAfterDeath(mydb):
 #     print(x)
-# for x in checkDivorceBeforeDeath(mydb):
+# for x in checkDivorceAfterDeath(mydb):
 #     print(x)
