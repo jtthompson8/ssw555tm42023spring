@@ -22,8 +22,7 @@ class TestGEDCOMParse(unittest.TestCase):
         myclient = pymongo.MongoClient(
             "mongodb://localhost:27017")
         mydb = myclient["db"]
-        res = [
-            "Error @F1@: Birth date of Miriam /MartÃ­nez/@I1@ occurs after their death date."]
+        res = ["Error @F1@: Birth date of Miriam /MartÃ­nez/@I1@ occurs after their death date."]
         self.assertEqual(checkBirthBeforeDeath(mydb), res,
                          'result does not match expected result for date check of birth death')
 
@@ -71,7 +70,7 @@ class TestGEDCOMParse(unittest.TestCase):
             "mongodb://localhost:27017")
         mydb = myclient["db"]
         res = [
-            "Error @F2@: Birth date of Skylar /White/ occurs before their marriage date."]
+            "Error @I8@: Birth date of Marie /Schrader/ occurs after the current date."]
         self.assertEqual(checkDatesBeforeCurrent(mydb), res,
                          'result does not match expected result for date check of birth marriage')
 

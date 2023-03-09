@@ -161,7 +161,7 @@ def checkDatesBeforeCurrent(mydb):
     ret = []
     mycol = mydb["Individuals"]
     cursor = mycol.find({})
-    currtime = datetime.now()
+    currtime = datetime.now().date()
     for doc in cursor:
         if 'DEATHDATE' in doc:
             deathDate = doc['DEATHDATE']
