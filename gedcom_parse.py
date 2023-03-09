@@ -2,15 +2,11 @@ from prettytable import PrettyTable
 import pymongo
 from datetime import datetime
 import calendar
-
 from datetime import datetime
-import calendar
+from dateutil.relativedelta import relativedelta
 
 
-myclient = pymongo.MongoClient(
-    "mongodb+srv://Christian:6TYXxCt9Sp9GDO20@cluster0.iilq4vg.mongodb.net/?retryWrites=true&w=majority")
-myclient = pymongo.MongoClient(
-    "mongodb+srv://Christian:6TYXxCt9Sp9GDO20@cluster0.iilq4vg.mongodb.net/?retryWrites=true&w=majority")
+myclient = pymongo.MongoClient("mongodb://localhost:27017")
 mydb = myclient["db"]
 
 
@@ -19,14 +15,6 @@ def readGEDCOM(file, mydb):
     mycol = mydb["Individuals"]
     mycol2 = mydb["Families"]
 
-
-def readGEDCOM(file, mydb):
-    res = []
-    mycol = mydb["Individuals"]
-    mycol2 = mydb["Families"]
-
-    tags = ['INDI', 'NAME', 'SEX', 'BIRT', 'DEAT', 'FAMC', 'FAMS', 'FAM',
-            'MARR', 'HUSB', 'WIFE', 'CHIL', 'DIV', 'DATE', 'HEAD', 'TRLR', 'NOTE']
     tags = ['INDI', 'NAME', 'SEX', 'BIRT', 'DEAT', 'FAMC', 'FAMS', 'FAM',
             'MARR', 'HUSB', 'WIFE', 'CHIL', 'DIV', 'DATE', 'HEAD', 'TRLR', 'NOTE']
 
@@ -191,9 +179,8 @@ def checkBirthBeforeDeath(mydb):
                            " cannot have their death date before being born")
     return ret
 
+
 # Checks Marriage Before Divorce
-
-
 def checkMarriageBeforeDivorce(mydb):
     ret = []
     mycol = mydb["Individuals"]
@@ -222,9 +209,8 @@ def checkMarriageBeforeDivorce(mydb):
                        " and " + husbDoc["NAME"] + " cannot occur before marriage")
     return ret
 
+
 # check Marriage before death
-
-
 def checkMarriageBeforeDeath(mydb):
     ret = []
     mycol = mydb["Individuals"]
@@ -254,9 +240,8 @@ def checkMarriageBeforeDeath(mydb):
                                " (" + wifeDoc["id"] + ") occurs after her death date.")
     return ret
 
+
 # check Divorce before death
-
-
 def checkDivorceBeforeDeath(mydb):
     ret = []
     mycol = mydb["Individuals"]
@@ -284,4 +269,53 @@ def checkDivorceBeforeDeath(mydb):
                     # print("Error " +  doc["id"] + ":Divorce date of " + wifeDoc["NAME"] + " (" + wifeDoc["id"] +") occurs after her death date.")
                     ret.append("Error " + doc["id"] + ":Divorce date of " + wifeDoc["NAME"] +
                                " (" + wifeDoc["id"] + ") occurs after her death date.")
+    return 
+
+#checks if individual lived over 150 years
+def checkOver150(mydb):
+    ret = []
+    mycol = mydb["Individuals"]
+    cursor = mycol.find({})
+    for doc in cursor:
+        birthTime = datetime.strptime(doc["BIRTHDATE"], '%d %b %Y').date()
+        if "DEATHDATE" in doc:
+            deathTime = datetime.strptime(doc["DEATHDATE"], '%d %b %Y').date()
+            delta = relativedelta(birthTime, deathTime)
+            if (abs(delta.years) >= 150 ):
+                ret.append("Anomaly " +doc["FAMS"]+ ": Death date of " + doc["NAME"] + doc["id"] +" occurs  150 (or more) years after their birth date")
+        else:
+            today = datetime.today()
+            delta = relativedelta(birthTime, today)
+            if (abs(delta.years) >= 150 ):
+                ret.append("Anomaly " +doc["FAMS"]+ ": "+doc["NAME"] + doc["id"] +" has been alive for 150 (or more) years")
+    print(ret)
     return ret
+
+#checks if child was born when not married
+def checkBirthBeforeMarriageAfterDivorce(mydb):
+    ret = []
+    mycol = mydb["Individuals"]
+    mycol2 = mydb["Families"]
+    cursor = mycol.find({})
+    for doc in cursor:
+        if "FAMC" in doc:
+            childBirth = datetime.strptime(doc["BIRTHDATE"], '%d %b %Y').date()
+            famDoc = mycol2.find_one({'id': doc["FAMC"]})
+            if "DATE" in famDoc:
+                marriageDate = datetime.strptime(famDoc["DATE"], '%d %b %Y').date()
+                if marriageDate > childBirth:
+                    ret.append("Anomaly " +doc["FAMC"]+ ": "+doc["NAME"] + doc["id"] +" was born before the marriage of marriage of their parents")
+                if "DIVDATE" in famDoc:
+                    divorceDate = datetime.strptime(famDoc["DIVDATE"], '%d %b %Y').date()
+                    delta = relativedelta(childBirth, divorceDate)
+                    if (abs(delta.months) >= 9):
+                        ret.append("Anomaly " +doc["FAMC"]+ ": "+doc["NAME"] + doc["id"] +" was born 9 months after the divorce of his parents")
+    print(ret)
+    return ret
+
+for x in readGEDCOM('Christian_Huang_Tree.ged', mydb):
+    print(x)
+for x in printIndividuals(mydb):
+    print(x)
+for x in printFamilies(mydb):
+    print(x)
