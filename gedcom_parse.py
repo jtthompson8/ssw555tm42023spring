@@ -157,6 +157,59 @@ def printFamilies(mydb):
     ret.append(y)
     return ret
 
+def checkDatesBeforeCurrent(mydb):
+    ret = []
+    mycol = mydb["Individuals"]
+    cursor = mycol.find({})
+    currtime = datetime.now()
+    for doc in cursor:
+        if 'DEATHDATE' in doc:
+            deathDate = doc['DEATHDATE']
+            deathDate_object = datetime.strptime(deathDate, '%d %b %Y').date()
+            if deathDate_object > currtime:
+                ret.append("Error " + doc["id"] + ": Death date of " + doc["NAME"] +
+                  " occurs after the current date.")
+        if 'BIRTHDATE' in doc:
+            birthDate = doc['BIRTHDATE']
+            birthDate_object = datetime.strptime(
+                birthDate, '%d %b %Y').date()
+            if birthDate_object > currtime:
+                ret.append("Error " + doc["id"] + ": Birth date of " + doc["NAME"] +
+                               " occurs after the current date.")
+        if 'DATE' in doc:
+            marriageDate = doc['DATE']
+            marriageDate_object = datetime.strptime(marriageDate, '%d %b %Y').date()
+            if marriageDate_object > currtime:
+                ret.append("Error " + doc["id"] + ": Marriage date of " + doc["NAME"] +
+                               " occurs after the current date.")
+        if 'DIVDATE' in doc:
+            divDate = doc["DIVDATE"]
+            divDate_object = datetime.strptime(divDate, '%d %b %Y').date()
+            if divDate_object > currtime:
+                ret.append("Error " + doc["id"] + ": Divorce date of " + doc["NAME"] +
+                               " occurs after the current date.")
+    return ret
+
+
+def checkBirthBeforeMarriage(mydb):
+    ret = []
+    mycol = mydb["Individuals"]
+    cursor = mycol.find({})
+    for doc in cursor:
+        if 'DATE' in doc:
+            marriageDate = doc['DATE']
+            marriageDate_object = datetime.strptime(marriageDate, '%d %b %Y').date()
+            if 'BIRTHDATE' in doc:
+                birthDate = doc['BIRTHDATE']
+                birthDate_object = datetime.strptime(
+                    birthDate, '%d %b %Y').date()
+                if birthDate_object > marriageDate_object:
+                    ret.append("Error " + doc["id"] + ": Birth date of " + doc["NAME"] +
+                               " occurs after their marriage date.")
+            else:
+                ret.append("Error " + doc["id"] + ": " + doc["NAME"] +
+                           " cannot have their marriage date before being born")
+    return ret
 
 # Checks Birth Before Death
 def checkBirthBeforeDeath(mydb):
