@@ -172,7 +172,7 @@ def checkBirthBeforeDeath(mydb):
                 birthDate_object = datetime.strptime(
                     birthDate, '%d %b %Y').date()
                 if birthDate_object > deathDate_object:
-                    ret.append("Error " + doc["id"] + ": Birth date of " + doc["NAME"] +
+                    ret.append("Error " + doc["FAMS"] + ": Birth date of " + doc["NAME"] + doc["id"] +
                                " occurs after their death date.")
             else:
                 ret.append("Error " + doc["id"] + ": " + doc["NAME"] +
@@ -269,7 +269,7 @@ def checkDivorceBeforeDeath(mydb):
                     # print("Error " +  doc["id"] + ":Divorce date of " + wifeDoc["NAME"] + " (" + wifeDoc["id"] +") occurs after her death date.")
                     ret.append("Error " + doc["id"] + ":Divorce date of " + wifeDoc["NAME"] +
                                " (" + wifeDoc["id"] + ") occurs after her death date.")
-    return 
+    return ret 
 
 #checks if individual lived over 150 years
 def checkOver150(mydb):
@@ -288,7 +288,6 @@ def checkOver150(mydb):
             delta = relativedelta(birthTime, today)
             if (abs(delta.years) >= 150 ):
                 ret.append("Anomaly " +doc["FAMS"]+ ": "+doc["NAME"] + doc["id"] +" has been alive for 150 (or more) years")
-    print(ret)
     return ret
 
 #checks if child was born when not married
@@ -310,12 +309,4 @@ def checkBirthBeforeMarriageAfterDivorce(mydb):
                     delta = relativedelta(childBirth, divorceDate)
                     if (abs(delta.months) >= 9):
                         ret.append("Anomaly " +doc["FAMC"]+ ": "+doc["NAME"] + doc["id"] +" was born 9 months after the divorce of his parents")
-    print(ret)
     return ret
-
-for x in readGEDCOM('Christian_Huang_Tree.ged', mydb):
-    print(x)
-for x in printIndividuals(mydb):
-    print(x)
-for x in printFamilies(mydb):
-    print(x)
