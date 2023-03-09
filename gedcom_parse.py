@@ -3,7 +3,12 @@ import pymongo
 from datetime import datetime
 import calendar
 
+from datetime import datetime
+import calendar
 
+
+myclient = pymongo.MongoClient(
+    "mongodb+srv://Christian:6TYXxCt9Sp9GDO20@cluster0.iilq4vg.mongodb.net/?retryWrites=true&w=majority")
 myclient = pymongo.MongoClient(
     "mongodb+srv://Christian:6TYXxCt9Sp9GDO20@cluster0.iilq4vg.mongodb.net/?retryWrites=true&w=majority")
 mydb = myclient["db"]
@@ -14,6 +19,14 @@ def readGEDCOM(file, mydb):
     mycol = mydb["Individuals"]
     mycol2 = mydb["Families"]
 
+
+def readGEDCOM(file, mydb):
+    res = []
+    mycol = mydb["Individuals"]
+    mycol2 = mydb["Families"]
+
+    tags = ['INDI', 'NAME', 'SEX', 'BIRT', 'DEAT', 'FAMC', 'FAMS', 'FAM',
+            'MARR', 'HUSB', 'WIFE', 'CHIL', 'DIV', 'DATE', 'HEAD', 'TRLR', 'NOTE']
     tags = ['INDI', 'NAME', 'SEX', 'BIRT', 'DEAT', 'FAMC', 'FAMS', 'FAM',
             'MARR', 'HUSB', 'WIFE', 'CHIL', 'DIV', 'DATE', 'HEAD', 'TRLR', 'NOTE']
 
@@ -156,10 +169,63 @@ def printFamilies(mydb):
     ret.append(y)
     return ret
 
-# check Marriage after death
+
+# Checks Birth Before Death
+def checkBirthBeforeDeath(mydb):
+    ret = []
+    mycol = mydb["Individuals"]
+    cursor = mycol.find({})
+    for doc in cursor:
+        if 'DEATHDATE' in doc:
+            deathDate = doc['DEATHDATE']
+            deathDate_object = datetime.strptime(deathDate, '%d %b %Y').date()
+            if 'BIRTHDATE' in doc:
+                birthDate = doc['BIRTHDATE']
+                birthDate_object = datetime.strptime(
+                    birthDate, '%d %b %Y').date()
+                if birthDate_object > deathDate_object:
+                    ret.append("Error " + doc["id"] + ": Birth date of " + doc["NAME"] +
+                               " occurs after their death date.")
+            else:
+                ret.append("Error " + doc["id"] + ": " + doc["NAME"] +
+                           " cannot have their death date before being born")
+    return ret
+
+# Checks Marriage Before Divorce
 
 
-def checkMarriageAfterDeath(mydb):
+def checkMarriageBeforeDivorce(mydb):
+    ret = []
+    mycol = mydb["Individuals"]
+    mycol2 = mydb["Families"]
+    cursor2 = mycol2.find({})
+    for doc in cursor2:
+        if "DATE" in doc:
+            marDate = doc["DATE"]
+            marDate_object = datetime.strptime(marDate, '%d %b %Y').date()
+            husb = doc["HUSB"]
+            wife = doc["WIFE"]
+            husbDoc = mycol.find_one({'id': husb})
+            wifeDoc = mycol.find_one({'id': wife})
+            if "DIVDATE" in doc:
+                divDate = doc["DIVDATE"]
+                divDate_object = datetime.strptime(divDate, '%d %b %Y').date()
+                if marDate_object > divDate_object:
+                    ret.append("Error " + doc["id"] + ": Marriage date of " + wifeDoc["NAME"] +
+                               " and " + husbDoc["NAME"] + " occurs after their divorce date.")
+        if "DATE" not in doc and "DIVDATE" in doc:
+            husb = doc["HUSB"]
+            wife = doc["WIFE"]
+            husbDoc = mycol.find_one({'id': husb})
+            wifeDoc = mycol.find_one({'id': wife})
+            ret.append("Error " + doc["id"] + ": Divorce of " + wifeDoc["NAME"] +
+                       " and " + husbDoc["NAME"] + " cannot occur before marriage")
+    return ret
+
+# check Marriage before death
+
+
+def checkMarriageBeforeDeath(mydb):
     ret = []
     mycol = mydb["Individuals"]
     mycol2 = mydb["Families"]
@@ -186,13 +252,12 @@ def checkMarriageAfterDeath(mydb):
                     # print("Error " +  doc["id"] + ":Marriage date of " + wifeDoc["NAME"] + " (" + wifeDoc["id"] +") occurs after her death date.")
                     ret.append("Error " + doc["id"] + ":Marriage date of " + wifeDoc["NAME"] +
                                " (" + wifeDoc["id"] + ") occurs after her death date.")
-    print(ret)
     return ret
 
-# check Divorce after death
+# check Divorce before death
 
 
-def checkDivorceAfterDeath(mydb):
+def checkDivorceBeforeDeath(mydb):
     ret = []
     mycol = mydb["Individuals"]
     mycol2 = mydb["Families"]
@@ -220,14 +285,3 @@ def checkDivorceAfterDeath(mydb):
                     ret.append("Error " + doc["id"] + ":Divorce date of " + wifeDoc["NAME"] +
                                " (" + wifeDoc["id"] + ") occurs after her death date.")
     return ret
-
-# for x in readGEDCOM('Christian_Huang_Tree.ged', mydb):
-#     print(x)
-# for x in printIndividuals(mydb):
-#     print(x)
-# for x in printFamilies(mydb):
-#     print(x)
-# for x in checkMarriageAfterDeath(mydb):
-#     print(x)
-# for x in checkDivorceAfterDeath(mydb):
-#     print(x)
