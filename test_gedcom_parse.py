@@ -61,9 +61,9 @@ class TestGEDCOMParse(unittest.TestCase):
             "mongodb://localhost:27017")
         mydb = myclient["db"]
         res = [
-            "Error @F5@: Birth date of Marie /Schrader/ occurs before the current date."]
+            "Error @F5@:Marriage date of Marie /Schrader/ (@I8@) occurs before her birth."]
         self.assertEqual(checkBirthBeforeMarriage(mydb), res,
-                         'result does not match expected result for checking date against the current date')
+                         'result does not match expected result for date check of birth before marriage')
 
     def test_date_before_current_date(self):
         myclient = pymongo.MongoClient(
@@ -72,7 +72,7 @@ class TestGEDCOMParse(unittest.TestCase):
         res = [
             "Error @I8@: Birth date of Marie /Schrader/ occurs after the current date."]
         self.assertEqual(checkDatesBeforeCurrent(mydb), res,
-                         'result does not match expected result for date check of birth marriage')
+                         'result does not match expected result for checking date against the current date')
 
 
     def test_checkOver150(self):
