@@ -1,7 +1,7 @@
 import unittest
 from datetime import datetime
 import pymongo
-from gedcom_parse import readGEDCOM, printIndividuals, printFamilies, checkBirthBeforeDeath, checkMarriageBeforeDivorce, checkMarriageBeforeDeath, checkDivorceBeforeDeath, checkOver150, checkDatesBeforeCurrent, checkBirthBeforeMarriageAfterDivorce, checkBirthBeforeMarriage, checkBirthBeforeDeathOfParents, checkMarriageAfterFourteen, checkSiblingsBornSame, checkSiblingSpacing
+from gedcom_parse import readGEDCOM, printIndividuals, printFamilies, checkBirthBeforeDeath, checkMarriageBeforeDivorce, checkMarriageBeforeDeath, checkDivorceBeforeDeath, checkOver150, checkDatesBeforeCurrent, checkBirthBeforeMarriageAfterDivorce, checkBirthBeforeMarriage, checkBirthBeforeDeathOfParents, checkMarriageAfterFourteen, checkSiblingsBornSame, checkSiblingSpacing, checkFifteenSiblings, checkMaleLastNames
 
 
 class TestGEDCOMParse(unittest.TestCase):
@@ -141,6 +141,23 @@ class TestGEDCOMParse(unittest.TestCase):
         res = ['Anomaly in @F4@ child @I16@ and child @I22@ have birthdays within 92 days', 'Anomaly in @F4@ child @I17@ and child @I22@ have birthdays within 92 days', 'Anomaly in @F4@ child @I18@ and child @I22@ have birthdays within 92 days', 'Anomaly in @F4@ child @I19@ and child @I22@ have birthdays within 92 days', 'Anomaly in @F4@ child @I20@ and child @I22@ have birthdays within 92 days', 'Anomaly in @F4@ child @I21@ and child @I22@ have birthdays within 92 days']
         self.assertEqual(checkSiblingSpacing(mydb), res,
                             'result does not match expected result for checking sibling spacing')
+        
+    def test_checkFifteenSiblings(self):
+        myclient = pymongo.MongoClient(
+            "mongodb://localhost:27017")
+        mydb = myclient["db"]
+        res = ['Anomaly @F7@: Family has 15 or more siblings']
+        self.assertEqual(checkFifteenSiblings(mydb), res,
+                         'result does not match expected result for check of fifteens siblings')
+        
+    def test_checkMaleLastNames(self):
+        myclient = pymongo.MongoClient(
+            "mongodb://localhost:27017")
+        mydb = myclient["db"]
+        res = ['Error @F7@: Child9 /Smith/ @I31@ has a different last name than his father Walter /White/ @I13@. All male members of a family should have the same last name.']
+        print(checkMaleLastNames(mydb))
+        self.assertEqual(checkMaleLastNames(mydb), res,
+                         'result does not match expected result for date check of male last names')
     
 if __name__ == '__main__':
     print('Running unit tests')

@@ -561,4 +561,33 @@ def checkParentsAge(mydb):
                 ret.append("Error " + doc["id"] + ": Husband " +
                            wifeDoc["NAME"] + " More than 60 years older than child")
 
+
+def checkFifteenSiblings(mydb):
+    ret = []
+    mycol = mydb["Families"]
+    cursor = mycol.find({})
+    for doc in cursor:
+        if "CHIL" in doc:
+            if len(doc["CHIL"]) >= 15:
+                ret.append("Anomaly "+doc["id"]+": Family has 15 or more siblings")
+    return(ret)
+
+
+def checkMaleLastNames(mydb):
+    ret = []
+    mycol = mydb["Individuals"]
+    mycol2 = mydb["Families"]
+    cursor = mycol.find({})
+    for doc in cursor:
+        if "FAMC" in doc:
+            famDoc = mycol2.find_one({'id': doc["FAMC"]})
+            try:
+                fatherDoc = mycol.find_one({'id': famDoc["HUSB"]})
+            except:
+                continue
+            if (fatherDoc["SURN"] != doc["SURN"]):
+                ret.append("Error "+doc["FAMC"]+": "+doc["NAME"] +" "+ doc["id"] + " has a different last name than his father "+fatherDoc["NAME"] +" "+ fatherDoc["id"] +". All male members of a family should have the same last name.")
+    return ret 
+
+
 # readGEDCOM('Christian_Huang_Tree.ged', mydb)
