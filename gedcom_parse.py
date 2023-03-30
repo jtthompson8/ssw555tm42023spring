@@ -2,7 +2,7 @@ from prettytable import PrettyTable
 import pymongo
 from datetime import datetime
 import calendar
-from datetime import datetime
+from datetime import datetime, timedelta
 from dateutil.relativedelta import relativedelta
 
 
@@ -73,6 +73,11 @@ def readGEDCOM(file, mydb):
                         divDate = False
                     elif info[1] == "DEAT":
                         deathDate = True
+                    elif info[1] == "CHIL":
+                        if "CHIL" in dic:
+                            dic[info[1]].append(info[2])
+                        else:
+                            dic["CHIL"] = [info[2]]
                     else:
                         dic[info[1]] = info[2]
             else:
@@ -372,7 +377,7 @@ def checkBirthBeforeMarriageAfterDivorce(mydb):
                     if (abs(delta.months) >= 9):
                         ret.append("Anomaly " +doc["FAMC"]+ ": "+doc["NAME"] + doc["id"] +" was born 9 months after the divorce of his parents")
     return ret
-
+#checks if chilld was born before death of parents
 def checkBirthBeforeDeathOfParents(mydb):
     ret = []
     mycol = mydb["Individuals"]
@@ -401,7 +406,7 @@ def checkBirthBeforeDeathOfParents(mydb):
                                 wifeDoc["id"] + " occurs before her child was born.")
     return ret
 
-
+#checks if Marriage is after both husband and wife are 14 or older
 def checkMarriageAfterFourteen(mydb):
     ret = []
     mycol = mydb["Individuals"]
@@ -426,4 +431,43 @@ def checkMarriageAfterFourteen(mydb):
                 delta = relativedelta(wifeBorn_obj, marriageDate)
                 if (abs(delta.years) <= 14):
                     ret.append("Error " + doc["id"] + ": " + hubDoc["NAME"] +" married before turning 14")
-    return ret       
+    return ret   
+
+ #checks that no more than five siblings are born at the same time
+def checkSiblingsBornSame(mydb):
+    ret = []
+    mycol = mydb["Individuals"]
+    mycol2 = mydb["Families"]
+    cursor = mycol2.find({})
+    dic = {}
+    for doc in cursor:
+        if "CHIL" in doc:
+            for chil in doc["CHIL"]:
+                    indDoc = mycol.find_one({'id': chil})
+            if indDoc["BIRTHDATE"] not in dic:
+                    dic[indDoc["BIRTHDATE"]] = 1
+            else:
+                    dic[indDoc["BIRTHDATE"]] = dic[indDoc["BIRTHDATE"]] + 1
+            for x,y in dic.items():
+                if y > 5:
+                    ret.append("Anomaly " + "in " + doc["id"] + " there are " + str(y) + " children with the birthday of " + str(x))     
+    return ret
+
+#checks that birth dates of siblings are more than 8 months (243 days) apart or less than 2 days apart
+def checkSiblingSpacing(mydb):
+    ret = []
+    mycol = mydb["Individuals"]
+    mycol2 = mydb["Families"]
+    cursor = mycol2.find({})
+    for doc in cursor:
+        dic = {}
+        if "CHIL" in doc:
+            for chil in doc["CHIL"]:
+                indDoc = mycol.find_one({'id': chil})   
+                for x,y in dic.items():
+                    if (abs(y - datetime.strptime(indDoc["BIRTHDATE"], '%d %b %Y').date()) <= timedelta(days=243) and abs(y - datetime.strptime(indDoc["BIRTHDATE"], '%d %b %Y').date()) > timedelta(days=2)):
+                        ret.append("Anomaly in " + doc["id"] + " child " + x + " and child " + indDoc["id"] + " have birthdays within " + str(abs(y - datetime.strptime(indDoc["BIRTHDATE"], '%d %b %Y').date()).days) + " days")  
+                dic[indDoc["id"]] = datetime.strptime(indDoc["BIRTHDATE"], '%d %b %Y').date()
+    return ret
+
+# readGEDCOM('Christian_Huang_Tree.ged', mydb)

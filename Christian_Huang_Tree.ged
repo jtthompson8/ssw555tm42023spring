@@ -171,6 +171,60 @@
 1 BIRT
 2 DATE 5 JUL 1961
 1 FAMC @F4@
+0 @I17@ INDI
+1 NAME Lennie /Salamanca/
+2 GIVN Lennie
+2 SURN Salamanca
+2 _MARNM Salamanca
+1 SEX M
+1 BIRT
+2 DATE 5 JUL 1961
+1 FAMC @F4@
+0 @I18@ INDI
+1 NAME Bill /Salamanca/
+2 GIVN Bill
+2 SURN Salamanca
+2 _MARNM Salamanca
+1 SEX M
+1 BIRT
+2 DATE 5 JUL 1961
+1 FAMC @F4@
+0 @I19@ INDI
+1 NAME Dan /Salamanca/
+2 GIVN Dan
+2 SURN Salamanca
+2 _MARNM Salamanca
+1 SEX M
+1 BIRT
+2 DATE 5 JUL 1961
+1 FAMC @F4@
+0 @I20@ INDI
+1 NAME Amit /Salamanca/
+2 GIVN Amit
+2 SURN Salamanca
+2 _MARNM Salamanca
+1 SEX M
+1 BIRT
+2 DATE 5 JUL 1961
+1 FAMC @F4@
+0 @I21@ INDI
+1 NAME Brendan /Salamanca/
+2 GIVN Brendan
+2 SURN Salamanca
+2 _MARNM Salamanca
+1 SEX M
+1 BIRT
+2 DATE 5 JUL 1961
+1 FAMC @F4@
+0 @I22@ INDI
+1 NAME Marcos /Salamanca/
+2 GIVN Marcos
+2 SURN Salamanca
+2 _MARNM Salamanca
+1 SEX M
+1 BIRT
+2 DATE 5 OCT 1961
+1 FAMC @F4@
 0 @F1@ FAM
 1 HUSB @I2@
 1 WIFE @I1@
@@ -207,6 +261,12 @@
 1 HUSB @I5@
 1 WIFE @I15@
 1 CHIL @I16@
+1 CHIL @I17@
+1 CHIL @I18@
+1 CHIL @I19@
+1 CHIL @I20@
+1 CHIL @I21@
+1 CHIL @I22@
 1 MARR
 2 DATE 4 MAY 1960
 2 PLAC Deming, New Mexico
