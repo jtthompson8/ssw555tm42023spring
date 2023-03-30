@@ -503,62 +503,7 @@ def checkSiblingSpacing(mydb):
 # checks that marriage should not occur during marriage to another spouse
 
 
-def noBigamy(mydb):
-    ret = []
-    mycol = mydb["Individuals"]
-    mycol2 = mydb["Families"]
-    cursor = mycol.find({})
-    cursor2 = mycol2.find({})
-
-    for doc in cursor2:
-        if "DATE" in doc:
-            husb = doc["HUSB"]
-            wife = doc["WIFE"]
-            hubDoc = mycol.find_one({'id': husb})
-            wifeDoc = mycol.find_one({'id': wife})
-            if "DIVDATE" not in doc:
-                if len(hubDoc["FAMS"]) > 1:
-                    ret.append("Error " + doc["id"] + ": " + hubDoc["NAME"] +
-                               " may not get married while already married")
-                if len(wifeDoc["FAMS"]) > 1:
-                    ret.append("Error " + doc["id"] + ": " + wifeDoc["NAME"] +
-                               " may not get married while already married")
-
-
-def checkParentsAge(mydb):
-    ret = []
-    hubborn_object = None
-    wifborn_object = None
-    chilborn_object = None
-    mycol = mydb["Individuals"]
-    mycol2 = mydb["Families"]
-    cursor = mycol2.find({})
-    for doc in cursor:
-        if "DATE" in doc:
-            husb = doc["HUSB"]
-            wife = doc["WIFE"]
-            child = doc["CHIL"]
-            hubDoc = mycol.find_one({'id': husb})
-            wifeDoc = mycol.find_one({'id': wife})
-            chilDoc = mycol.find_one({'id': child})
-            if 'BIRTHDATE' in hubDoc:
-                hubborn = hubDoc["BIRHTDATE"]
-                hubborn_object = datetime.strptime(hubborn, '%d %b %Y').date()
-            if 'BIRTHDATE' in wifeDoc:
-                wifborn = hubDoc["BIRHTDATE"]
-                wifborn_object = datetime.strptime(wifborn, '%d %b %Y').date()
-            if 'BIRTHDATE' in chilDoc:
-                chilborn = chilDoc["BIRHTDATE"]
-                chilborn_object = datetime.strptime(
-                    chilborn, '%d %b %Y').date()
-            hub_chil_age_diff = relativedelta(
-                chilborn_object, hubborn_object).years
-            wif_age_diff = relativedelta(chilborn_object, wifborn_object).years
-            if hub_chil_age_diff > 80:
-                ret.append("Error " + doc["id"] + ": Husband " +
-                           hubDoc["NAME"] + " More than 80 years older than child")
-            if wif_age_diff > 60:
-                ret.append("Error " + doc["id"] + ": Husband " +
-                           wifeDoc["NAME"] + " More than 60 years older than child")
-
+# def noBigamy(mydb):
+#     ret = []
+#     mycol =
 # readGEDCOM('Christian_Huang_Tree.ged', mydb)
