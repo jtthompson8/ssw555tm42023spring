@@ -157,8 +157,61 @@ def printFamilies(mydb):
     ret.append(y)
     return ret
 
-# check Marriage after death
-def checkMarriageAfterDeath(mydb):
+
+# Checks Birth Before Death
+def checkBirthBeforeDeath(mydb):
+    ret = []
+    mycol = mydb["Individuals"]
+    cursor = mycol.find({})
+    for doc in cursor:
+        if 'DEATHDATE' in doc:
+            deathDate = doc['DEATHDATE']
+            deathDate_object = datetime.strptime(deathDate, '%d %b %Y').date()
+            if 'BIRTHDATE' in doc:
+                birthDate = doc['BIRTHDATE']
+                birthDate_object = datetime.strptime(
+                    birthDate, '%d %b %Y').date()
+                if birthDate_object > deathDate_object:
+                    ret.append("Error " + doc["id"] + ": Birth date of " + doc["NAME"] +
+                               " occurs after their death date.")
+            else:
+                ret.append("Error " + doc["id"] + ": " + doc["NAME"] +
+                           " cannot have their death date before being born")
+    return ret
+
+
+# Checks Marriage Before Divorce
+def checkMarriageBeforeDivorce(mydb):
+    ret = []
+    mycol = mydb["Individuals"]
+    mycol2 = mydb["Families"]
+    cursor2 = mycol2.find({})
+    for doc in cursor2:
+        if "DATE" in doc:
+            marDate = doc["DATE"]
+            marDate_object = datetime.strptime(marDate, '%d %b %Y').date()
+            husb = doc["HUSB"]
+            wife = doc["WIFE"]
+            husbDoc = mycol.find_one({'id': husb})
+            wifeDoc = mycol.find_one({'id': wife})
+            if "DIVDATE" in doc:
+                divDate = doc["DIVDATE"]
+                divDate_object = datetime.strptime(divDate, '%d %b %Y').date()
+                if marDate_object > divDate_object:
+                    ret.append("Error " + doc["id"] + ": Marriage date of " + wifeDoc["NAME"] +
+                               " and " + husbDoc["NAME"] + " occurs after their divorce date.")
+        if "DATE" not in doc and "DIVDATE" in doc:
+            husb = doc["HUSB"]
+            wife = doc["WIFE"]
+            husbDoc = mycol.find_one({'id': husb})
+            wifeDoc = mycol.find_one({'id': wife})
+            ret.append("Error " + doc["id"] + ": Divorce of " + wifeDoc["NAME"] +
+                       " and " + husbDoc["NAME"] + " cannot occur before marriage")
+    return ret
+
+
+# check Marriage before death
+def checkMarriageBeforeDeath(mydb):
     ret = []
     mycol = mydb["Individuals"]
     mycol2 = mydb["Families"]
@@ -185,11 +238,11 @@ def checkMarriageAfterDeath(mydb):
                     # print("Error " +  doc["id"] + ":Marriage date of " + wifeDoc["NAME"] + " (" + wifeDoc["id"] +") occurs after her death date.")
                     ret.append("Error " + doc["id"] + ":Marriage date of " + wifeDoc["NAME"] +
                                " (" + wifeDoc["id"] + ") occurs after her death date.")
-    print(ret)
     return ret
 
-# check Divorce after death
-def checkDivorceAfterDeath(mydb):
+
+# check Divorce before death
+def checkDivorceBeforeDeath(mydb):
     ret = []
     mycol = mydb["Individuals"]
     mycol2 = mydb["Families"]
@@ -216,9 +269,9 @@ def checkDivorceAfterDeath(mydb):
                     # print("Error " +  doc["id"] + ":Divorce date of " + wifeDoc["NAME"] + " (" + wifeDoc["id"] +") occurs after her death date.")
                     ret.append("Error " + doc["id"] + ":Divorce date of " + wifeDoc["NAME"] +
                                " (" + wifeDoc["id"] + ") occurs after her death date.")
-    return ret
+    return 
 
-
+#checks if individual lived over 150 years
 def checkOver150(mydb):
     ret = []
     mycol = mydb["Individuals"]
@@ -238,7 +291,7 @@ def checkOver150(mydb):
     print(ret)
     return ret
 
-
+#checks if child was born when not married
 def checkBirthBeforeMarriageAfterDivorce(mydb):
     ret = []
     mycol = mydb["Individuals"]
@@ -260,13 +313,49 @@ def checkBirthBeforeMarriageAfterDivorce(mydb):
     print(ret)
     return ret
 
-for x in readGEDCOM('Christian_Huang_Tree.ged', mydb):
+def checkFifteenSiblings(mydb):
+    siblingCount = {}
+    ret = []
+    mycol = mydb["Individuals"]
+    cursor = mycol.find({})
+    for doc in cursor:
+        if "FAMC" in doc:
+            if doc["FAMC"] not in siblingCount:
+                siblingCount[doc["FAMC"]] = 1
+            else:
+                siblingCount[doc["FAMC"]] += 1
+    for id, count in siblingCount.items():
+        if count >= 15:
+            ret.append("Anomaly "+id+": Family has 15 or more siblings")
+    print(ret)
+    return(ret)
+
+def checkMaleLastNames(mydb):
+    ret = []
+    mycol = mydb["Individuals"]
+    mycol2 = mydb["Families"]
+    cursor = mycol.find({})
+    for doc in cursor:
+        if "FAMC" in doc:
+            famDoc = mycol2.find_one({'id': doc["FAMC"]})
+            try:
+                fatherDoc = mycol.find_one({'id': famDoc["HUSB"]})
+            except:
+                continue
+            if (fatherDoc["SURN"] != doc["SURN"]):
+                ret.append("Error "+doc["FAMC"]+": "+doc["NAME"] + doc["id"] + " has a different last name than his father "+fatherDoc["NAME"] + fatherDoc["id"] +". All male members of a family should have the same last name.")
+    print(ret)
+    return ret
+
+
+
+for x in readGEDCOM('multiple-test.ged', mydb):
     print(x)
 for x in printIndividuals(mydb):
     print(x)
 for x in printFamilies(mydb):
     print(x)
-for x in checkOver150(mydb):
+for x in checkFifteenSiblings(mydb):
     print(x)
-for x in checkBirthBeforeMarriageAfterDivorce(mydb):
+for x in checkMaleLastNames(mydb):
     print(x)
