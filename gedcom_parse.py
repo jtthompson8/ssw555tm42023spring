@@ -73,6 +73,11 @@ def readGEDCOM(file, mydb):
                         divDate = False
                     elif info[1] == "DEAT":
                         deathDate = True
+                    elif info[1] == "CHIL":
+                        if "CHIL" in dic:
+                            dic[info[1]].append(info[2])
+                        else:
+                            dic["CHIL"] = [info[2]]
                     else:
                         dic[info[1]] = info[2]
             else:
@@ -372,3 +377,26 @@ def checkBirthBeforeMarriageAfterDivorce(mydb):
                     if (abs(delta.months) >= 9):
                         ret.append("Anomaly " +doc["FAMC"]+ ": "+doc["NAME"] + doc["id"] +" was born 9 months after the divorce of his parents")
     return ret
+
+#checks that no more than five siblings are born at the same time
+def checkSiblingsBornSame(mydb):
+    ret = []
+    mycol = mydb["Individuals"]
+    mycol2 = mydb["Families"]
+    cursor = mycol2.find({})
+    for doc in cursor:
+        dic = {}
+        if "CHIL" in doc:
+            for chil in doc["CHIL"]:
+                indDoc = mycol.find_one({'id': chil})
+                if indDoc["BIRTHDATE"] not in dic:
+                    dic[indDoc["BIRTHDATE"]] = 1
+                else:
+                    dic[indDoc["BIRTHDATE"]] = dic[indDoc["BIRTHDATE"]] + 1
+        for x,y in dic.items():
+            if y > 5:
+                ret.append("Anomaly " + "in " + doc["id"] + " there are " + str(y) + " children with the birthday of " + str(x))     
+    return ret
+
+# readGEDCOM('Christian_Huang_Tree.ged', mydb)
+print(checkSiblingsBornSame(mydb))

@@ -1,7 +1,7 @@
 import unittest
 from datetime import datetime
 import pymongo
-from gedcom_parse import readGEDCOM, printIndividuals, printFamilies, checkBirthBeforeDeath, checkMarriageBeforeDivorce, checkMarriageBeforeDeath, checkDivorceBeforeDeath, checkOver150, checkDatesBeforeCurrent, checkBirthBeforeMarriageAfterDivorce, checkBirthBeforeMarriage
+from gedcom_parse import readGEDCOM, printIndividuals, printFamilies, checkBirthBeforeDeath, checkMarriageBeforeDivorce, checkMarriageBeforeDeath, checkDivorceBeforeDeath, checkOver150, checkDatesBeforeCurrent, checkBirthBeforeMarriageAfterDivorce, checkBirthBeforeMarriage, checkSiblingsBornSame
 
 
 class TestGEDCOMParse(unittest.TestCase):
@@ -93,10 +93,23 @@ class TestGEDCOMParse(unittest.TestCase):
             'Anomaly @F1@: Marco /Salamanca/@I7@ was born before the marriage of marriage of their parents',
             'Anomaly @F5@: Lalo /Salamanca/@I11@ was born before the marriage of marriage of their parents',
             'Anomaly @F3@: Gretchen /Salamanca/@I12@ was born before the marriage of marriage of their parents',
-            'Anomaly @F4@: Leonel /Salamanca/@I16@ was born 9 months after the divorce of his parents'
+            'Anomaly @F4@: Leonel /Salamanca/@I16@ was born 9 months after the divorce of his parents',
+            'Anomaly @F4@: Lennie /Salamanca/@I17@ was born 9 months after the divorce of his parents',
+            'Anomaly @F4@: Bill /Salamanca/@I18@ was born 9 months after the divorce of his parents',
+            'Anomaly @F4@: Dan /Salamanca/@I19@ was born 9 months after the divorce of his parents',
+            'Anomaly @F4@: Amit /Salamanca/@I20@ was born 9 months after the divorce of his parents',
+            'Anomaly @F4@: Brendan /Salamanca/@I21@ was born 9 months after the divorce of his parents'
             ]
         self.assertEqual(checkBirthBeforeMarriageAfterDivorce(mydb), res,
                          'result does not match expected result for date check of birth death')
+        
+    def test_checkSiblingsBornSame(self):
+        myclient = pymongo.MongoClient(
+            "mongodb://localhost:27017")
+        mydb = myclient["db"]
+        res = ['Anomaly in @F4@ there are 6 children with the birthday of 5 JUL 1961']
+        self.assertEqual(checkSiblingsBornSame(mydb), res,
+                            'result does not match expected result for checking more than 5 siblings having the same birthdate')
         
         
 if __name__ == '__main__':
