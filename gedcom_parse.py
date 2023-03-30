@@ -439,18 +439,18 @@ def checkSiblingsBornSame(mydb):
     mycol = mydb["Individuals"]
     mycol2 = mydb["Families"]
     cursor = mycol2.find({})
-    dic = {}
     for doc in cursor:
+        dic = {}
         if "CHIL" in doc:
             for chil in doc["CHIL"]:
-                    indDoc = mycol.find_one({'id': chil})
-            if indDoc["BIRTHDATE"] not in dic:
+                indDoc = mycol.find_one({'id': chil})
+                if indDoc["BIRTHDATE"] not in dic:
                     dic[indDoc["BIRTHDATE"]] = 1
-            else:
+                else:
                     dic[indDoc["BIRTHDATE"]] = dic[indDoc["BIRTHDATE"]] + 1
-            for x,y in dic.items():
-                if y > 5:
-                    ret.append("Anomaly " + "in " + doc["id"] + " there are " + str(y) + " children with the birthday of " + str(x))     
+        for x,y in dic.items():
+            if y > 5:
+                ret.append("Anomaly " + "in " + doc["id"] + " there are " + str(y) + " children with the birthday of " + str(x))     
     return ret
 
 #checks that birth dates of siblings are more than 8 months (243 days) apart or less than 2 days apart
