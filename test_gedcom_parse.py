@@ -1,7 +1,7 @@
 import unittest
 from datetime import datetime
 import pymongo
-from gedcom_parse import readGEDCOM, printIndividuals, printFamilies, checkBirthBeforeDeath, checkMarriageBeforeDivorce, checkMarriageBeforeDeath, checkDivorceBeforeDeath, checkOver150, checkDatesBeforeCurrent, checkBirthBeforeMarriageAfterDivorce, checkBirthBeforeMarriage, checkSiblingsBornSame
+from gedcom_parse import readGEDCOM, printIndividuals, printFamilies, checkBirthBeforeDeath, checkMarriageBeforeDivorce, checkMarriageBeforeDeath, checkDivorceBeforeDeath, checkOver150, checkDatesBeforeCurrent, checkBirthBeforeMarriageAfterDivorce, checkBirthBeforeMarriage, checkSiblingsBornSame, checkSiblingSpacing
 
 
 class TestGEDCOMParse(unittest.TestCase):
@@ -111,7 +111,16 @@ class TestGEDCOMParse(unittest.TestCase):
         self.assertEqual(checkSiblingsBornSame(mydb), res,
                             'result does not match expected result for checking more than 5 siblings having the same birthdate')
         
-        
+    def test_checkSiblingSpacing(self):
+        myclient = pymongo.MongoClient(
+            "mongodb://localhost:27017")
+        mydb = myclient["db"]
+        res = ['Anomaly in @F4@ child @I16@ and child @I22@ have birthdays within 92 days', 'Anomaly in @F4@ child @I17@ and child @I22@ have birthdays within 92 days', 'Anomaly in @F4@ child @I18@ and child @I22@ have birthdays within 92 days', 'Anomaly in @F4@ child @I19@ and child @I22@ have birthdays within 92 days', 'Anomaly in @F4@ child @I20@ and child @I22@ have birthdays within 92 days', 'Anomaly in @F4@ child @I21@ and child @I22@ have birthdays within 92 days']
+        self.assertEqual(checkSiblingSpacing(mydb), res,
+                            'result does not match expected result for checking sibling spacing')
+    
 if __name__ == '__main__':
     print('Running unit tests')
     unittest.main()
+
+

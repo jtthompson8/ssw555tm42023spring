@@ -2,7 +2,7 @@ from prettytable import PrettyTable
 import pymongo
 from datetime import datetime
 import calendar
-from datetime import datetime
+from datetime import datetime, timedelta
 from dateutil.relativedelta import relativedelta
 
 
@@ -398,5 +398,21 @@ def checkSiblingsBornSame(mydb):
                 ret.append("Anomaly " + "in " + doc["id"] + " there are " + str(y) + " children with the birthday of " + str(x))     
     return ret
 
+#checks that birth dates of siblings are more than 8 months (243 days) apart or less than 2 days apart
+def checkSiblingSpacing(mydb):
+    ret = []
+    mycol = mydb["Individuals"]
+    mycol2 = mydb["Families"]
+    cursor = mycol2.find({})
+    for doc in cursor:
+        dic = {}
+        if "CHIL" in doc:
+            for chil in doc["CHIL"]:
+                indDoc = mycol.find_one({'id': chil})   
+                for x,y in dic.items():
+                    if (abs(y - datetime.strptime(indDoc["BIRTHDATE"], '%d %b %Y').date()) <= timedelta(days=243) and abs(y - datetime.strptime(indDoc["BIRTHDATE"], '%d %b %Y').date()) > timedelta(days=2)):
+                        ret.append("Anomaly in " + doc["id"] + " child " + x + " and child " + indDoc["id"] + " have birthdays within " + str(abs(y - datetime.strptime(indDoc["BIRTHDATE"], '%d %b %Y').date()).days) + " days")  
+                dic[indDoc["id"]] = datetime.strptime(indDoc["BIRTHDATE"], '%d %b %Y').date()
+    return ret
+
 # readGEDCOM('Christian_Huang_Tree.ged', mydb)
-print(checkSiblingsBornSame(mydb))

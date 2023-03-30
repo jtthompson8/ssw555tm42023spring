@@ -216,6 +216,15 @@
 1 BIRT
 2 DATE 5 JUL 1961
 1 FAMC @F4@
+0 @I22@ INDI
+1 NAME Marcos /Salamanca/
+2 GIVN Marcos
+2 SURN Salamanca
+2 _MARNM Salamanca
+1 SEX M
+1 BIRT
+2 DATE 5 OCT 1961
+1 FAMC @F4@
 0 @F1@ FAM
 1 HUSB @I2@
 1 WIFE @I1@
@@ -257,6 +266,7 @@
 1 CHIL @I19@
 1 CHIL @I20@
 1 CHIL @I21@
+1 CHIL @I22@
 1 MARR
 2 DATE 4 MAY 1960
 2 PLAC Deming, New Mexico
