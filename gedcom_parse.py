@@ -372,3 +372,58 @@ def checkBirthBeforeMarriageAfterDivorce(mydb):
                     if (abs(delta.months) >= 9):
                         ret.append("Anomaly " +doc["FAMC"]+ ": "+doc["NAME"] + doc["id"] +" was born 9 months after the divorce of his parents")
     return ret
+
+def checkBirthBeforeDeathOfParents(mydb):
+    ret = []
+    mycol = mydb["Individuals"]
+    mycol2 = mydb["Families"]
+    cursor = mycol.find({})
+    for doc in cursor:
+        if "FAMC" in doc:
+            childBirth = datetime.strptime(doc["BIRTHDATE"], '%d %b %Y').date()
+            famDoc = mycol2.find_one({'id': doc["FAMC"]})
+            if "HUSB" in famDoc:
+                husb = famDoc["HUSB"]
+                wife = famDoc["WIFE"]
+                hubDoc = mycol.find_one({'id': husb})
+                wifeDoc = mycol.find_one({'id': wife})
+                if 'DEATHDATE' in hubDoc:
+                    hubdied = hubDoc['DEATHDATE']
+                    hubdied_object = datetime.strptime(hubdied, '%d %b %Y').date()
+                    if childBirth > hubdied_object:
+                        ret.append("Error " + doc["id"] + ": Death of " + hubDoc["NAME"] +
+                                " occurs at least 9 months before his child is born.")
+                if 'DEATHDATE' in wifeDoc:
+                    wifdied = wifeDoc['DEATHDATE']
+                    wifdied_object = datetime.strptime(wifdied, '%d %b %Y').date()
+                    if childBirth > wifdied_object:
+                        ret.append("Error " + doc["id"] + ": Death of " + wifeDoc["NAME"] +
+                                wifeDoc["id"] + " occurs before her child was born.")
+    return ret
+
+
+def checkMarriageAfterFourteen(mydb):
+    ret = []
+    mycol = mydb["Individuals"]
+    mycol2 = mydb["Families"]
+    cursor = mycol2.find({})
+    for doc in cursor:
+        if "DATE" in doc:
+            marriageDate = datetime.strptime(doc["DATE"], '%d %b %Y').date()
+            husb = doc["HUSB"]
+            wife = doc["WIFE"]
+            hubDoc = mycol.find_one({'id': husb})
+            wifeDoc = mycol.find_one({'id': wife})
+            if 'BIRTHDATE' in hubDoc:
+                hubBorn = hubDoc['BIRTHDATE']
+                hubBorn_obj = datetime.strptime(hubBorn, '%d %b %Y').date()
+                delta = relativedelta(hubBorn_obj, marriageDate)
+                if (abs(delta.years) <= 14):
+                    ret.append("Error " + doc["id"] + ": " + hubDoc["NAME"] +" married before turning 14")
+            if 'BIRTHDATE' in wifeDoc:
+                wifeBorn = wifeDoc['BIRTHDATE']
+                wifeBorn_obj = datetime.strptime(wifeBorn, '%d %b %Y').date()
+                delta = relativedelta(wifeBorn_obj, marriageDate)
+                if (abs(delta.years) <= 14):
+                    ret.append("Error " + doc["id"] + ": " + hubDoc["NAME"] +" married before turning 14")
+    return ret       

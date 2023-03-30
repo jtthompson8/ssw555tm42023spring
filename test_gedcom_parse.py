@@ -1,7 +1,7 @@
 import unittest
 from datetime import datetime
 import pymongo
-from gedcom_parse import readGEDCOM, printIndividuals, printFamilies, checkBirthBeforeDeath, checkMarriageBeforeDivorce, checkMarriageBeforeDeath, checkDivorceBeforeDeath, checkOver150, checkDatesBeforeCurrent, checkBirthBeforeMarriageAfterDivorce, checkBirthBeforeMarriage
+from gedcom_parse import readGEDCOM, printIndividuals, printFamilies, checkBirthBeforeDeath, checkMarriageBeforeDivorce, checkMarriageBeforeDeath, checkDivorceBeforeDeath, checkOver150, checkDatesBeforeCurrent, checkBirthBeforeMarriageAfterDivorce, checkBirthBeforeMarriage, checkBirthBeforeDeathOfParents, checkMarriageAfterFourteen
 
 
 class TestGEDCOMParse(unittest.TestCase):
@@ -97,8 +97,29 @@ class TestGEDCOMParse(unittest.TestCase):
             ]
         self.assertEqual(checkBirthBeforeMarriageAfterDivorce(mydb), res,
                          'result does not match expected result for date check of birth death')
-        
-        
+
+    def test_checkBirthBeforeDeathOfParents(self):
+        myclient = pymongo.MongoClient(
+            "mongodb://localhost:27017")
+        mydb = myclient["db"]
+        res = [
+            'Error @I3@: Death of Miriam /MartÃ­nez/@I1@ occurs before her child was born.',
+            'Error @I5@: Death of Miriam /MartÃ­nez/@I1@ occurs before her child was born.',
+            'Error @I7@: Death of Miriam /MartÃ­nez/@I1@ occurs before her child was born.'
+        ]
+        self.assertEqual(checkBirthBeforeDeathOfParents(mydb), res,
+                         'result does not match expected result for checking being born before parents die')
+
+    def test_checkMarriageAfterFourteen(self):
+        myclient = pymongo.MongoClient(
+            "mongodb://localhost:27017")
+        mydb = myclient["db"]
+        res = [
+        'Error @F4@: Eduardo /Salamanca/ married before turning 14'
+        ]
+        self.assertEqual(checkMarriageAfterFourteen(mydb), res,
+                         'result does not match expected result for checking marriage before 14')
+
 if __name__ == '__main__':
     print('Running unit tests')
     unittest.main()
