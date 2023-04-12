@@ -569,8 +569,9 @@ def checkFifteenSiblings(mydb):
     for doc in cursor:
         if "CHIL" in doc:
             if len(doc["CHIL"]) >= 15:
-                ret.append("Anomaly "+doc["id"]+": Family has 15 or more siblings")
-    return(ret)
+                ret.append("Anomaly "+doc["id"] +
+                           ": Family has 15 or more siblings")
+    return (ret)
 
 
 def checkMaleLastNames(mydb):
@@ -586,8 +587,54 @@ def checkMaleLastNames(mydb):
             except:
                 continue
             if (fatherDoc["SURN"] != doc["SURN"]):
-                ret.append("Error "+doc["FAMC"]+": "+doc["NAME"] +" "+ doc["id"] + " has a different last name than his father "+fatherDoc["NAME"] +" "+ fatherDoc["id"] +". All male members of a family should have the same last name.")
-    return ret 
+                ret.append("Error "+doc["FAMC"]+": "+doc["NAME"] + " " + doc["id"] + " has a different last name than his father " +
+                           fatherDoc["NAME"] + " " + fatherDoc["id"] + ". All male members of a family should have the same last name.")
+    return ret
+
+#checks that the father of a family is a male and the wife of a family is a female
+def checkCorrectGenderRole(mydb):
+    ret = []
+    mycol = mydb["Individuals"]
+    mycol2 = mydb["Families"]
+    cursor = mycol2.find({})
+    for doc in cursor:
+        husb = doc["HUSB"]
+        hubDoc = mycol.find_one({'id': husb})
+        hubGender = hubDoc["SEX"]
+        if hubGender != "M":
+            ret.append(
+                "Anomaly in family " + doc["id"] + ": Husband is not a male (" + hubDoc["id"] + ")")
+
+        wife = doc["WIFE"]
+        wifeDoc = mycol.find_one({'id': wife})
+        wifGender = wifeDoc["SEX"]
+        if wifGender != "F":
+            ret.append("Anomaly in family " +
+                       doc["id"] + ": Wife is not a female (" + wifeDoc["id"] + ")")
+    return ret
+
+#checks that all individuals and families have unique ids
+def checkUniqueIds(mydb):
+    ret = []
+    mycol = mydb["Individuals"]
+    mycol2 = mydb["Families"]
+    cursor = mycol2.find({})
+    cursor2 = mycol.find({})
+    famIds = []
+    indivIds = []
+    for doc in cursor:
+        id = doc["id"]
+        if id in famIds:
+            ret.append("Anomaly: " + id + " is repeated (not unique)")
+        else:
+            famIds.append(id)
+    for doc in cursor2:
+        id = doc["id"]
+        if id in indivIds:
+            ret.append("Anomaly: " + id + " is repeated (not unique)")
+        else:
+            indivIds.append(id)
+    return ret
 
 
 # readGEDCOM('Christian_Huang_Tree.ged', mydb)

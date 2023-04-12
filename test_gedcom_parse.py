@@ -1,7 +1,7 @@
 import unittest
 from datetime import datetime
 import pymongo
-from gedcom_parse import readGEDCOM, printIndividuals, printFamilies, checkBirthBeforeDeath, checkMarriageBeforeDivorce, checkMarriageBeforeDeath, checkDivorceBeforeDeath, checkOver150, checkDatesBeforeCurrent, checkBirthBeforeMarriageAfterDivorce, checkBirthBeforeMarriage, checkBirthBeforeDeathOfParents, checkMarriageAfterFourteen, checkSiblingsBornSame, checkSiblingSpacing, checkFifteenSiblings, checkMaleLastNames
+from gedcom_parse import readGEDCOM, printIndividuals, printFamilies, checkBirthBeforeDeath, checkMarriageBeforeDivorce, checkMarriageBeforeDeath, checkDivorceBeforeDeath, checkOver150, checkDatesBeforeCurrent, checkBirthBeforeMarriageAfterDivorce, checkBirthBeforeMarriage, checkBirthBeforeDeathOfParents, checkMarriageAfterFourteen, checkSiblingsBornSame, checkSiblingSpacing, checkFifteenSiblings, checkMaleLastNames, checkCorrectGenderRole, checkUniqueIds
 
 
 class TestGEDCOMParse(unittest.TestCase):
@@ -22,7 +22,8 @@ class TestGEDCOMParse(unittest.TestCase):
         myclient = pymongo.MongoClient(
             "mongodb://localhost:27017")
         mydb = myclient["db"]
-        res = ["Error @F1@: Birth date of Miriam /MartÃ­nez/@I1@ occurs after their death date."]
+        res = [
+            "Error @F1@: Birth date of Miriam /MartÃ­nez/@I1@ occurs after their death date."]
         self.assertEqual(checkBirthBeforeDeath(mydb), res,
                          'result does not match expected result for date check of birth death')
 
@@ -74,32 +75,22 @@ class TestGEDCOMParse(unittest.TestCase):
         self.assertEqual(checkDatesBeforeCurrent(mydb), res,
                          'result does not match expected result for checking date against the current date')
 
-
     def test_checkOver150(self):
         myclient = pymongo.MongoClient(
             "mongodb://localhost:27017")
         mydb = myclient["db"]
-        res = ['Anomaly @F1@: Death date of Carlos /Salamanca/@I2@ occurs  150 (or more) years after their birth date']
+        res = [
+            'Anomaly @F1@: Death date of Carlos /Salamanca/@I2@ occurs  150 (or more) years after their birth date']
         self.assertEqual(checkOver150(mydb), res,
                          'result does not match expected result for date check of birth death')
-        
+
     def test_checkBirthBeforeMarriageAfterDivorce(self):
+        self.maxDiff = None
         myclient = pymongo.MongoClient(
             "mongodb://localhost:27017")
         mydb = myclient["db"]
-        res = [
-            'Anomaly @F1@: Hector /Salamanca/@I3@ was born before the marriage of marriage of their parents',
-            'Anomaly @F1@: Eduardo /Salamanca/@I5@ was born before the marriage of marriage of their parents',
-            'Anomaly @F1@: Marco /Salamanca/@I7@ was born before the marriage of marriage of their parents',
-            'Anomaly @F5@: Lalo /Salamanca/@I11@ was born before the marriage of marriage of their parents',
-            'Anomaly @F3@: Gretchen /Salamanca/@I12@ was born before the marriage of marriage of their parents',
-            'Anomaly @F4@: Leonel /Salamanca/@I16@ was born 9 months after the divorce of his parents',
-            'Anomaly @F4@: Lennie /Salamanca/@I17@ was born 9 months after the divorce of his parents',
-            'Anomaly @F4@: Bill /Salamanca/@I18@ was born 9 months after the divorce of his parents',
-            'Anomaly @F4@: Dan /Salamanca/@I19@ was born 9 months after the divorce of his parents',
-            'Anomaly @F4@: Amit /Salamanca/@I20@ was born 9 months after the divorce of his parents',
-            'Anomaly @F4@: Brendan /Salamanca/@I21@ was born 9 months after the divorce of his parents'
-            ]
+        res = ['Anomaly @F1@: Hector /Salamanca/@I3@ was born before the marriage of marriage of their parents', 'Anomaly @F1@: Eduardo /Salamanca/@I5@ was born before the marriage of marriage of their parents', 'Anomaly @F1@: Marco /Salamanca/@I7@ was born before the marriage of marriage of their parents', 'Anomaly @F5@: Lalo /Salamanca/@I11@ was born before the marriage of marriage of their parents', 'Anomaly @F3@: Gretchen /Salamanca/@I12@ was born before the marriage of marriage of their parents', 'Anomaly @F4@: Leonel /Salamanca/@I16@ was born 9 months after the divorce of his parents',
+               'Anomaly @F4@: Lennie /Salamanca/@I17@ was born 9 months after the divorce of his parents', 'Anomaly @F4@: Bill /Salamanca/@I18@ was born 9 months after the divorce of his parents', 'Anomaly @F4@: Dan /Salamanca/@I19@ was born 9 months after the divorce of his parents', 'Anomaly @F4@: Amit /Salamanca/@I20@ was born 9 months after the divorce of his parents', 'Anomaly @F4@: Brendan /Salamanca/@I21@ was born 9 months after the divorce of his parents', 'Anomaly @F8@: Dave /White/@I38@ was born before the marriage of marriage of their parents', 'Anomaly @F8@: Stacy /White/@I38@ was born before the marriage of marriage of their parents']
         self.assertEqual(checkBirthBeforeMarriageAfterDivorce(mydb), res,
                          'result does not match expected result for date check of birth death')
 
@@ -120,28 +111,28 @@ class TestGEDCOMParse(unittest.TestCase):
             "mongodb://localhost:27017")
         mydb = myclient["db"]
         res = [
-        'Error @F4@: Eduardo /Salamanca/ married before turning 14'
+            'Error @F4@: Eduardo /Salamanca/ married before turning 14'
         ]
         self.assertEqual(checkMarriageAfterFourteen(mydb), res,
                          'result does not match expected result for checking marriage before 14')
 
-        
     def test_checkSiblingsBornSame(self):
         myclient = pymongo.MongoClient(
             "mongodb://localhost:27017")
         mydb = myclient["db"]
         res = ['Anomaly in @F4@ there are 6 children with the birthday of 5 JUL 1961']
         self.assertEqual(checkSiblingsBornSame(mydb), res,
-                            'result does not match expected result for checking more than 5 siblings having the same birthdate')
-        
+                         'result does not match expected result for checking more than 5 siblings having the same birthdate')
+
     def test_checkSiblingSpacing(self):
         myclient = pymongo.MongoClient(
             "mongodb://localhost:27017")
         mydb = myclient["db"]
-        res = ['Anomaly in @F4@ child @I16@ and child @I22@ have birthdays within 92 days', 'Anomaly in @F4@ child @I17@ and child @I22@ have birthdays within 92 days', 'Anomaly in @F4@ child @I18@ and child @I22@ have birthdays within 92 days', 'Anomaly in @F4@ child @I19@ and child @I22@ have birthdays within 92 days', 'Anomaly in @F4@ child @I20@ and child @I22@ have birthdays within 92 days', 'Anomaly in @F4@ child @I21@ and child @I22@ have birthdays within 92 days']
+        res = ['Anomaly in @F4@ child @I16@ and child @I22@ have birthdays within 92 days', 'Anomaly in @F4@ child @I17@ and child @I22@ have birthdays within 92 days', 'Anomaly in @F4@ child @I18@ and child @I22@ have birthdays within 92 days',
+               'Anomaly in @F4@ child @I19@ and child @I22@ have birthdays within 92 days', 'Anomaly in @F4@ child @I20@ and child @I22@ have birthdays within 92 days', 'Anomaly in @F4@ child @I21@ and child @I22@ have birthdays within 92 days']
         self.assertEqual(checkSiblingSpacing(mydb), res,
-                            'result does not match expected result for checking sibling spacing')
-        
+                         'result does not match expected result for checking sibling spacing')
+
     def test_checkFifteenSiblings(self):
         myclient = pymongo.MongoClient(
             "mongodb://localhost:27017")
@@ -149,7 +140,7 @@ class TestGEDCOMParse(unittest.TestCase):
         res = ['Anomaly @F7@: Family has 15 or more siblings']
         self.assertEqual(checkFifteenSiblings(mydb), res,
                          'result does not match expected result for check of fifteens siblings')
-        
+
     def test_checkMaleLastNames(self):
         myclient = pymongo.MongoClient(
             "mongodb://localhost:27017")
@@ -158,9 +149,26 @@ class TestGEDCOMParse(unittest.TestCase):
         print(checkMaleLastNames(mydb))
         self.assertEqual(checkMaleLastNames(mydb), res,
                          'result does not match expected result for date check of male last names')
-    
+
+    def test_checkCorrectGenderRole(self):
+        myclient = pymongo.MongoClient(
+            "mongodb://localhost:27017")
+        mydb = myclient["db"]
+        res = ['Anomaly in family @F1@: Husband is not a male (@I2@)', 'Anomaly in family @F1@: Wife is not a female (@I1@)',
+               'Anomaly in family @F8@: Wife is not a female (@I38@)', 'Anomaly in family @F8@: Wife is not a female (@I38@)']
+        self.assertEqual(checkCorrectGenderRole(mydb), res,
+                         'result does not match expected result for gender check of families')
+
+    def test_checkUniqueIds(self):
+        myclient = pymongo.MongoClient(
+            "mongodb://localhost:27017")
+        mydb = myclient["db"]
+        res = [
+            'Anomaly: @F8@ is repeated (not unique)', 'Anomaly: @I38@ is repeated (not unique)']
+        self.assertEqual(checkUniqueIds(mydb), res,
+                         'result does not match expected result for id uniqueness check of individuals and families')
+
+
 if __name__ == '__main__':
     print('Running unit tests')
     unittest.main()
-
-
