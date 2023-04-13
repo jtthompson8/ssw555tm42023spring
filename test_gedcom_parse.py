@@ -1,7 +1,7 @@
 import unittest
 from datetime import datetime
 import pymongo
-from gedcom_parse import readGEDCOM, printIndividuals, printFamilies, checkBirthBeforeDeath, checkMarriageBeforeDivorce, checkMarriageBeforeDeath, checkDivorceBeforeDeath, checkOver150, checkDatesBeforeCurrent, checkBirthBeforeMarriageAfterDivorce, checkBirthBeforeMarriage, checkBirthBeforeDeathOfParents, checkMarriageAfterFourteen, checkSiblingsBornSame, checkSiblingSpacing, checkFifteenSiblings, checkMaleLastNames, checkCorrectGenderRole, checkUniqueIds, check_UniqueName_and_BirthDate, check_UniqueFamily_and_MarriageDate
+from gedcom_parse import readGEDCOM, printIndividuals, printFamilies, checkBirthBeforeDeath, checkMarriageBeforeDivorce, checkMarriageBeforeDeath, checkDivorceBeforeDeath, checkOver150, checkDatesBeforeCurrent, checkBirthBeforeMarriageAfterDivorce, checkBirthBeforeMarriage, checkBirthBeforeDeathOfParents, checkMarriageAfterFourteen, checkSiblingsBornSame, checkSiblingSpacing, checkFifteenSiblings, checkMaleLastNames, checkCorrectGenderRole, checkUniqueIds, check_UniqueName_and_BirthDate, check_UniqueFamily_and_MarriageDate, check_aunt_uncle_nephew_niece, check_first_cousins_marriage
 
 
 class TestGEDCOMParse(unittest.TestCase):
@@ -191,6 +191,21 @@ class TestGEDCOMParse(unittest.TestCase):
         myclient = pymongo.MongoClient(
             "mongodb://localhost:27017")
         mydb = myclient["db"]
+        res = [
+            'Anomaly Marco /Salamanca/ is married to first cousin Gretchen /Salamanca/']
+        print(check_first_cousins_marriage(mydb))
+        self.assertEqual(check_UniqueFamily_and_MarriageDate(mydb), res,
+                         'result does not match expected result for first cousin marriage check')
+
+    def test_check_aunt_uncle_nephew_niece(self):
+        myclient = pymongo.MongoClient(
+            "mongodb://localhost:27017")
+        mydb = myclient["db"]
+        res = [
+            'Anomaly Carlos /Salamanca/ is married to their nephew/niece Gretchen /Salamanca/']
+        print(check_first_cousins_marriage(mydb))
+        self.assertEqual(check_UniqueFamily_and_MarriageDate(mydb), res,
+                         'result does not match expected result for aunt/uncle nephew/niece marriage check')
 
 
 if __name__ == '__main__':

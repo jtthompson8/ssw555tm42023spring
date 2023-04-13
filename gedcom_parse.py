@@ -729,7 +729,7 @@ def check_aunt_uncle_nephew_niece(mydb):
                         for aunt_uncle in mycol.find({'id': aunt_id}):
                             aunt_uncle_siblings = aunt_uncle.get('CHIL', [])
                             if (nephew_id in aunt_uncle_siblings) or (niece_id in aunt_uncle_siblings):
-                                ret.append("Anomaly: " + aunt_uncle['NAME'] + " (" + aunt_uncle['id'] +
-                                           ") is married to their " + niece_nephew['SEX'] + " " + niece_nephew['NAME'] + " (" + niece_nephew['id'] + ")")
+                                ret.append("Anomaly: " + aunt_uncle['NAME'] +
+                                           " is married to their nephew/niece " + " " + niece_nephew['NAME'])
     return ret
 # readGEDCOM('Christian_Huang_Tree.ged', mydb)
