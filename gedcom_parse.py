@@ -636,5 +636,34 @@ def checkUniqueIds(mydb):
             indivIds.append(id)
     return ret
 
+# check for unique name and birth date combination
+def check_UniqueName_and_BirthDate(mydb):
+    ret = []
+    infoSet = set()
+    mycol = mydb["Individuals"]
+    cursor = mycol.find({})
+    for doc in cursor:
+        if (doc["NAME"], doc["BIRTHDATE"]) in infoSet:
+            ret.append("Anomaly: "+ doc["NAME"] +" with a birth date of "+ doc["BIRTHDATE"] +" appears more than once.")
+        else:
+            infoSet.add((doc["NAME"], doc["BIRTHDATE"]))
+    return ret
+
+
+# check for unique family and marriage date combination
+def check_UniqueFamily_and_MarriageDate(mydb):
+    ret = []
+    infoSet = set()
+    mycol = mydb["Families"]
+    mycol2 = mydb["Individuals"]
+    cursor = mycol.find({})
+    for doc in cursor:
+        husbandName = mycol2.find_one({'id': doc["HUSB"]})["NAME"]
+        wifeName = mycol2.find_one({'id': doc["WIFE"]})["NAME"]
+        if (husbandName, wifeName, doc["DATE"]) in infoSet:
+            ret.append("Anomaly: Family with the spouses "+ husbandName + " and "+ wifeName +" with a marriage date of "+ doc["DATE"] +" appears more than once.")
+        else:
+            infoSet.add((husbandName, wifeName, doc["DATE"]))
+    return ret
 
 # readGEDCOM('Christian_Huang_Tree.ged', mydb)
