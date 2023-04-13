@@ -167,16 +167,17 @@ class TestGEDCOMParse(unittest.TestCase):
             'Anomaly: @F8@ is repeated (not unique)', 'Anomaly: @I38@ is repeated (not unique)']
         self.assertEqual(checkUniqueIds(mydb), res,
                          'result does not match expected result for id uniqueness check of individuals and families')
-        
+
     def test_check_UniqueName_and_BirthDate(self):
         myclient = pymongo.MongoClient(
             "mongodb://localhost:27017")
         mydb = myclient["db"]
-        res = ['Anomaly: Dave /White/ with a birth date of 11 JAN 1990 appears more than once.']
+        res = [
+            'Anomaly: Dave /White/ with a birth date of 11 JAN 1990 appears more than once.']
         print(check_UniqueName_and_BirthDate(mydb))
         self.assertEqual(check_UniqueName_and_BirthDate(mydb), res,
                          'result does not match expected result for unique names and birth dates check')
-        
+
     def test_check_UniqueFamily_and_MarriageDate(self):
         myclient = pymongo.MongoClient(
             "mongodb://localhost:27017")
@@ -185,6 +186,11 @@ class TestGEDCOMParse(unittest.TestCase):
         print(check_UniqueFamily_and_MarriageDate(mydb))
         self.assertEqual(check_UniqueFamily_and_MarriageDate(mydb), res,
                          'result does not match expected result for unique spouses and marriage dates check')
+
+    def test_check_first_cousins_marriage(self):
+        myclient = pymongo.MongoClient(
+            "mongodb://localhost:27017")
+        mydb = myclient["db"]
 
 
 if __name__ == '__main__':

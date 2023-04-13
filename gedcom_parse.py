@@ -675,7 +675,7 @@ def check_UniqueFamily_and_MarriageDate(mydb):
     return ret
 
 
-def check_first_cousins(mydb):
+def check_first_cousins_marriage(mydb):
     ret = []
     mycol = mydb["Individuals"]
     mycol2 = mydb["Families"]
