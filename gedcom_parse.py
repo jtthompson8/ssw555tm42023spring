@@ -591,7 +591,9 @@ def checkMaleLastNames(mydb):
                            fatherDoc["NAME"] + " " + fatherDoc["id"] + ". All male members of a family should have the same last name.")
     return ret
 
-#checks that the father of a family is a male and the wife of a family is a female
+# checks that the father of a family is a male and the wife of a family is a female
+
+
 def checkCorrectGenderRole(mydb):
     ret = []
     mycol = mydb["Individuals"]
@@ -613,7 +615,9 @@ def checkCorrectGenderRole(mydb):
                        doc["id"] + ": Wife is not a female (" + wifeDoc["id"] + ")")
     return ret
 
-#checks that all individuals and families have unique ids
+# checks that all individuals and families have unique ids
+
+
 def checkUniqueIds(mydb):
     ret = []
     mycol = mydb["Individuals"]
@@ -637,6 +641,8 @@ def checkUniqueIds(mydb):
     return ret
 
 # check for unique name and birth date combination
+
+
 def check_UniqueName_and_BirthDate(mydb):
     ret = []
     infoSet = set()
@@ -644,7 +650,8 @@ def check_UniqueName_and_BirthDate(mydb):
     cursor = mycol.find({})
     for doc in cursor:
         if (doc["NAME"], doc["BIRTHDATE"]) in infoSet:
-            ret.append("Anomaly: "+ doc["NAME"] +" with a birth date of "+ doc["BIRTHDATE"] +" appears more than once.")
+            ret.append("Anomaly: " + doc["NAME"] + " with a birth date of " +
+                       doc["BIRTHDATE"] + " appears more than once.")
         else:
             infoSet.add((doc["NAME"], doc["BIRTHDATE"]))
     return ret
@@ -661,9 +668,68 @@ def check_UniqueFamily_and_MarriageDate(mydb):
         husbandName = mycol2.find_one({'id': doc["HUSB"]})["NAME"]
         wifeName = mycol2.find_one({'id': doc["WIFE"]})["NAME"]
         if (husbandName, wifeName, doc["DATE"]) in infoSet:
-            ret.append("Anomaly: Family with the spouses "+ husbandName + " and "+ wifeName +" with a marriage date of "+ doc["DATE"] +" appears more than once.")
+            ret.append("Anomaly: Family with the spouses " + husbandName + " and " + wifeName +
+                       " with a marriage date of " + doc["DATE"] + " appears more than once.")
         else:
             infoSet.add((husbandName, wifeName, doc["DATE"]))
     return ret
 
+
+def check_first_cousins(mydb):
+    ret = []
+    mycol = mydb["Individuals"]
+    mycol2 = mydb["Families"]
+    first_cousins = []
+
+    # First, create a dictionary of individuals where the key is their ID and the value is their parent's ID
+    individuals = {}
+    for indi in mycol.find():
+        if 'FAMC' in indi:
+            individuals[indi['id']] = indi['FAMC']
+
+    # Next, loop through each family and check if any children are first cousins
+    for fam in mycol2.find():
+        if 'CHIL' in fam:
+            children = fam['CHIL']
+            if len(children) > 1:
+                for i in range(len(children)):
+                    for j in range(i+1, len(children)):
+                        child1 = children[i]
+                        child2 = children[j]
+                        if individuals.get(child1) == individuals.get(child2):
+                            # If the children are first cousins, check if they are married
+                            if 'HUSB' in fam and 'WIFE' in fam:
+                                husband_id = fam['HUSB']
+                                wife_id = fam['WIFE']
+                                if child1 in mycol.find_one({"id": husband_id})['CHIL'] and child2 in mycol.find_one({"id": wife_id})['CHIL']:
+                                    ret.append(
+                                        "Anomaly " + child1["NAME"] + " is married to first cousin " + child2["NAME"])
+
+
+def check_aunt_uncle_nephew_niece(mydb):
+    mycol = mydb["Individuals"]
+    mycol2 = mydb["Families"]
+    ret = []
+
+    for fam in mycol2.find():
+        if 'HUSB' in fam and 'WIFE' in fam:
+            husband_id = fam['HUSB']
+            wife_id = fam['WIFE']
+
+            for husb in mycol.find({'id': husband_id}):
+                husb_siblings = husb.get('CHIL', [])
+                for sibling_id in husb_siblings:
+                    for niece_nephew in mycol.find({'FAMC': sibling_id}):
+                        if niece_nephew['SEX'] == 'M':
+                            aunt_id = wife_id
+                            nephew_id = niece_nephew['id']
+                        else:
+                            aunt_id = husband_id
+                            niece_id = niece_nephew['id']
+                        for aunt_uncle in mycol.find({'id': aunt_id}):
+                            aunt_uncle_siblings = aunt_uncle.get('CHIL', [])
+                            if (nephew_id in aunt_uncle_siblings) or (niece_id in aunt_uncle_siblings):
+                                ret.append("Anomaly: " + aunt_uncle['NAME'] + " (" + aunt_uncle['id'] +
+                                           ") is married to their " + niece_nephew['SEX'] + " " + niece_nephew['NAME'] + " (" + niece_nephew['id'] + ")")
+    return ret
 # readGEDCOM('Christian_Huang_Tree.ged', mydb)
