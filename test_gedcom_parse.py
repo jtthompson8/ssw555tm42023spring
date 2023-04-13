@@ -1,7 +1,7 @@
 import unittest
 from datetime import datetime
 import pymongo
-from gedcom_parse import readGEDCOM, printIndividuals, printFamilies, checkBirthBeforeDeath, checkMarriageBeforeDivorce, checkMarriageBeforeDeath, checkDivorceBeforeDeath, checkOver150, checkDatesBeforeCurrent, checkBirthBeforeMarriageAfterDivorce, checkBirthBeforeMarriage, checkBirthBeforeDeathOfParents, checkMarriageAfterFourteen, checkSiblingsBornSame, checkSiblingSpacing, checkFifteenSiblings, checkMaleLastNames, checkCorrectGenderRole, checkUniqueIds, check_UniqueName_and_BirthDate, check_UniqueFamily_and_MarriageDate
+from gedcom_parse import readGEDCOM, printIndividuals, printFamilies, checkBirthBeforeDeath, checkMarriageBeforeDivorce, checkMarriageBeforeDeath, checkDivorceBeforeDeath, checkOver150, checkDatesBeforeCurrent, checkBirthBeforeMarriageAfterDivorce, checkBirthBeforeMarriage, checkBirthBeforeDeathOfParents, checkMarriageAfterFourteen, checkSiblingsBornSame, checkSiblingSpacing, checkFifteenSiblings, checkMaleLastNames, checkCorrectGenderRole, checkUniqueIds
 
 
 class TestGEDCOMParse(unittest.TestCase):
@@ -167,24 +167,6 @@ class TestGEDCOMParse(unittest.TestCase):
             'Anomaly: @F8@ is repeated (not unique)', 'Anomaly: @I38@ is repeated (not unique)']
         self.assertEqual(checkUniqueIds(mydb), res,
                          'result does not match expected result for id uniqueness check of individuals and families')
-    
-    # def test_check_UniqueName_and_BirthDate(self):
-    #     myclient = pymongo.MongoClient(
-    #         "mongodb://localhost:27017")
-    #     mydb = myclient["db"]
-    #     res = ['Anomaly: Hector /Salamanca/ with a birth date of 6 MAY 1939 appears more than once.']
-    #     print(check_UniqueName_and_BirthDate(mydb))
-    #     self.assertEqual(check_UniqueName_and_BirthDate(mydb), res,
-    #                      'result does not match expected result for date check of male last names')
-        
-    # def test_check_UniqueFamily_and_MarriageDate(self):
-    #     myclient = pymongo.MongoClient(
-    #         "mongodb://localhost:27017")
-    #     mydb = myclient["db"]
-    #     res = ['Anomaly: Family with the spouses Hector /Salamanca/ and Skylar /White/ with a marriage date of 4 MAY 1959 appears more than once.']
-    #     print(check_UniqueFamily_and_MarriageDate(mydb))
-    #     self.assertEqual(check_UniqueFamily_and_MarriageDate(mydb), res,
-    #                      'result does not match expected result for date check of male last names')
 
 
 if __name__ == '__main__':
