@@ -1,7 +1,7 @@
 import unittest
 from datetime import datetime
 import pymongo
-from gedcom_parse import readGEDCOM, printIndividuals, printFamilies, checkBirthBeforeDeath, checkMarriageBeforeDivorce, checkMarriageBeforeDeath, checkDivorceBeforeDeath, checkOver150, checkDatesBeforeCurrent, checkBirthBeforeMarriageAfterDivorce, checkBirthBeforeMarriage, checkBirthBeforeDeathOfParents, checkMarriageAfterFourteen, checkSiblingsBornSame, checkSiblingSpacing, checkFifteenSiblings, checkMaleLastNames, checkCorrectGenderRole, checkUniqueIds, check_UniqueName_and_BirthDate, check_UniqueFamily_and_MarriageDate, check_aunt_uncle_nephew_niece, check_first_cousins_marriage
+from gedcom_parse import readGEDCOM, printIndividuals, printFamilies, checkBirthBeforeDeath, checkMarriageBeforeDivorce, checkMarriageBeforeDeath, checkDivorceBeforeDeath, checkOver150, checkDatesBeforeCurrent, checkBirthBeforeMarriageAfterDivorce, checkBirthBeforeMarriage, checkBirthBeforeDeathOfParents, checkMarriageAfterFourteen, checkSiblingsBornSame, checkSiblingSpacing, checkFifteenSiblings, checkMaleLastNames, checkCorrectGenderRole, checkUniqueIds, check_UniqueName_and_BirthDate, check_UniqueFamily_and_MarriageDate, check_aunt_uncle_nephew_niece, check_first_cousins_marriage, checkMarriageDescendants, checkMarriageSibling
 
 
 class TestGEDCOMParse(unittest.TestCase):
@@ -206,6 +206,29 @@ class TestGEDCOMParse(unittest.TestCase):
         print(check_first_cousins_marriage(mydb))
         self.assertEqual(check_UniqueFamily_and_MarriageDate(mydb), res,
                          'result does not match expected result for aunt/uncle nephew/niece marriage check')
+        
+    def testcheckMarriageSibling(self):
+        myclient = pymongo.MongoClient(
+            "mongodb://localhost:27017")
+        mydb = myclient["db"]
+        res = [
+            'Error: Carlos /Salamanca/ is married to Miriam /MartÃ\xadnez/ and they are siblings',
+            'Error: Dave /White/ is married to Dave /White/ and they are siblings',
+            'Error: Dave /White/ is married to Dave /White/ and they are siblings'
+        ]
+        self.assertEqual(checkMarriageSibling(mydb), res,
+                         'result does not match expected result for sibling marriage check')
+
+    def testcheckMarriageDescendant(self):
+        myclient = pymongo.MongoClient(
+            "mongodb://localhost:27017")
+        mydb = myclient["db"]
+        res = [
+            
+        ]
+        self.assertEqual(checkMarriageDescendants(mydb), res,
+                         'result does not match expected result for descendant marriage check')
+
 
 
 if __name__ == '__main__':

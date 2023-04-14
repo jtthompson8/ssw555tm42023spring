@@ -732,4 +732,65 @@ def check_aunt_uncle_nephew_niece(mydb):
                                 ret.append("Anomaly: " + aunt_uncle['NAME'] +
                                            " is married to their nephew/niece " + " " + niece_nephew['NAME'])
     return ret
+
+
+def checkMarriageDescendants(mydb):
+    ret = []
+    mycol = mydb["Individuals"]
+    mycol2 = mydb["Families"]
+    cursor = mycol2.find({})
+    for doc in cursor:
+        if "CHIL" in doc:
+            husb = doc["HUSB"]
+            wife = doc["WIFE"]
+            husbDoc = mycol.find_one({'id': husb})
+            wifeDoc = mycol.find_one({'id': wife})
+            for chil in doc["CHIL"]:
+                indDoc = mycol.find_one({'id': chil})
+                husbDoc = mycol.find_one({'id': husb})
+                if indDoc["NAME"] == husbDoc["NAME"]:
+                    ret.append("Error " + indDoc["id"] + indDoc["NAME"] + " should not be married to their ancestor " + wifeDoc["NAME"])
+                if indDoc["NAME"] == wifeDoc["NAME"]:   
+                    ret.append("Error " + indDoc["id"] + indDoc["NAME"] + " should not be married to their ancestor " + husbDoc["NAME"])
+                if "CHIL" in indDoc:
+                    for chil in indDoc["CHIL"]:
+                        indDoc2 = mycol.find_one({'id': chil})
+                        if indDoc2["NAME"] == husbDoc["NAME"]:
+                            ret.append("Error " + indDoc2["id"] + indDoc["NAME"] + " should not be married to their ancestor " + wifeDoc["NAME"])
+                        if indDoc2["NAME"] == wifeDoc["NAME"]:   
+                            ret.append("Error " + indDoc2["id"] + indDoc["NAME"] + " should not be married to their ancestor " + husbDoc["NAME"])
+                        if "CHIL" in indDoc2:
+                            for chil in indDoc2["CHIL"]:
+                                indDoc3 = mycol.find_one({'id': chil})
+                                if indDoc3["NAME"] == husbDoc["NAME"]:
+                                    ret.append("Error " + indDoc3["id"] + indDoc3["NAME"] + " should not be married to their ancestor " + wifeDoc["NAME"])
+                                if indDoc3["NAME"] == wifeDoc["NAME"]:   
+                                    ret.append("Error " + indDoc3["id"] + indDoc3["NAME"] + " should not be married to their ancestor " + husbDoc["NAME"])
+    return ret
+    
+
+
+
+def checkMarriageSibling(mydb):
+    ret = []
+    mycol = mydb["Individuals"]
+    mycol2 = mydb["Families"]
+
+    individuals = {}
+    for indi in mycol.find():
+        if 'FAMC' in indi:
+            individuals[indi['id']] = indi['FAMC']
+        
+    for fam in mycol2.find():
+        if "HUSB" in fam and "WIFE" in fam:
+            husb = fam["HUSB"]
+            wife = fam["WIFE"]
+            hubDoc = mycol.find_one({'id': husb})
+            wifeDoc = mycol.find_one({'id': wife})
+            if individuals.get(husb) == individuals.get(wife):
+                ret.append("Error: " + hubDoc["NAME"] + " is married to " + wifeDoc["NAME"]+ " and they are siblings")
+    return ret
+
+
+
 # readGEDCOM('Christian_Huang_Tree.ged', mydb)
