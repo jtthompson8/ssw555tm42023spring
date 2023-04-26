@@ -1,7 +1,7 @@
 import unittest
 from datetime import datetime
 import pymongo
-from gedcom_parse import readGEDCOM, printIndividuals, printFamilies, checkBirthBeforeDeath, checkMarriageBeforeDivorce, checkMarriageBeforeDeath, checkDivorceBeforeDeath, checkOver150, checkDatesBeforeCurrent, checkBirthBeforeMarriageAfterDivorce, checkBirthBeforeMarriage, checkBirthBeforeDeathOfParents, checkMarriageAfterFourteen, checkSiblingsBornSame, checkSiblingSpacing, checkFifteenSiblings, checkMaleLastNames, checkCorrectGenderRole, checkUniqueIds, check_UniqueName_and_BirthDate, check_UniqueFamily_and_MarriageDate, check_aunt_uncle_nephew_niece, check_first_cousins_marriage, checkMarriageDescendants, checkMarriageSibling
+from gedcom_parse import readGEDCOM, printIndividuals, printFamilies, checkBirthBeforeDeath, checkMarriageBeforeDivorce, checkMarriageBeforeDeath, checkDivorceBeforeDeath, checkOver150, checkDatesBeforeCurrent, checkBirthBeforeMarriageAfterDivorce, checkBirthBeforeMarriage, checkBirthBeforeDeathOfParents, checkMarriageAfterFourteen, checkSiblingsBornSame, checkSiblingSpacing, checkFifteenSiblings, checkMaleLastNames, checkCorrectGenderRole, checkUniqueIds, check_UniqueName_and_BirthDate, check_UniqueFamily_and_MarriageDate, check_aunt_uncle_nephew_niece, check_first_cousins_marriage, checkMarriageDescendants, checkMarriageSibling, listMultipleBirths, listOrphans
 
 
 class TestGEDCOMParse(unittest.TestCase):
@@ -228,6 +228,22 @@ class TestGEDCOMParse(unittest.TestCase):
         ]
         self.assertEqual(checkMarriageDescendants(mydb), res,
                          'result does not match expected result for descendant marriage check')
+        
+    def testlistMultipleBirths(self):
+        myclient = pymongo.MongoClient(
+            "mongodb://localhost:27017")
+        mydb = myclient["db"]
+        res = ['Anomoly: in family @F4@ there are 6 births on 5 JUL 1961', 'Anomoly: in family @F8@ there are 2 births on 11 JAN 1990']
+        self.assertEqual(listMultipleBirths(mydb), res,
+                         'result does not match expected result for list multiple births')
+        
+    def testlistOrphans(self):
+        myclient = pymongo.MongoClient(
+            "mongodb://localhost:27017")
+        mydb = myclient["db"]
+        res = ['Anomoly: in family @F7@, @I37@ is an orphan']
+        self.assertEqual(listOrphans(mydb), res,
+                         'result does not match expected result for list oprhans')
 
 
 

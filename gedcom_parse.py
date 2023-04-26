@@ -791,6 +791,51 @@ def checkMarriageSibling(mydb):
                 ret.append("Error: " + hubDoc["NAME"] + " is married to " + wifeDoc["NAME"]+ " and they are siblings")
     return ret
 
+def listMultipleBirths(mydb):
+    ret = []
+    mycol = mydb["Individuals"]
+    mycol2 = mydb["Families"]
+    cursor2 = mycol.find({})
+    indivDic = {}
+    for doc in cursor2:
+        if "FAMC" in doc:
+            fam = doc["FAMC"]
+            birthDate = doc['BIRTHDATE']
+            if fam not in indivDic:
+                indivDic[fam] = [birthDate]
+            else:
+                indivDic[fam].append(birthDate)
+    for doc in indivDic:
+        dic = {}
+        for x in indivDic[doc]:
+            if x not in dic:
+                dic[x] = 1
+            else:
+                dic[x] = dic[x] + 1
+        for x in dic:
+            if dic[x] > 1:         
+                ret.append("Anomoly: in family " + doc + " there are " + str(dic[x]) + " births on " + str(x))
+    return ret
+
+def listOrphans(mydb):
+    ret = []
+    mycol = mydb["Individuals"]
+    mycol2 = mydb["Families"]
+    cursor2 = mycol.find({})
+    for doc in cursor2:
+        if "FAMC" in doc:
+            fam = doc["FAMC"]
+            birthDate = datetime.strptime(doc['BIRTHDATE'], '%d %b %Y').date()
+            print(abs(relativedelta(birthDate, datetime.strptime("4 APR 2023", '%d %b %Y').date()).years))
+            if abs(relativedelta(birthDate, datetime.strptime("4 APR 2023", '%d %b %Y').date()).years) < 18: 
+                print(doc["id"])
+                famDoc = mycol2.find_one({'id': fam})
+                hubDoc = mycol.find_one({'id': famDoc["HUSB"]})
+                wifDoc = mycol.find_one({'id': famDoc["WIFE"]})
+                if "DEATHDATE" in hubDoc and "DEATHDATE" in wifDoc:
+                    ret.append("Anomoly: in family " + fam + ", " + doc["id"] + " is an orphan")
+    return ret
 
 
 # readGEDCOM('Christian_Huang_Tree.ged', mydb)
+listOrphans(mydb)
