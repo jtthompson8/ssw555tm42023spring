@@ -791,6 +791,39 @@ def checkMarriageSibling(mydb):
                 ret.append("Error: " + hubDoc["NAME"] + " is married to " + wifeDoc["NAME"]+ " and they are siblings")
     return ret
 
+def listSiblingsByAge(mydb):
+    ret = []
+    ret.append("Listing Siblings By Age:")
+    mycol = mydb["Individuals"]
+    mycol2 = mydb["Families"]
+    cursor = mycol2.find({})
+    for doc in cursor:
+        dic = {}
+        test=[]
+        if "CHIL" in doc:
+            for chil in doc["CHIL"]:
+                kiddoc = mycol.find_one({'id': chil})
+                dic[kiddoc["NAME"]] = datetime.strptime(kiddoc["BIRTHDATE"], '%d %b %Y')
+            sdic = sorted(dic.items(), key=lambda item: item[1], reverse=True)
+            ret.append(str(sdic))
+
+    return ret
+                
+def take_second(elem):
+    return elem[1]
+
+def listDead(mydb):
+    ret = []
+    ret.append("Listing Deceased:")
+    mycol = mydb["Individuals"]
+
+    for indi in mycol.find():
+        if "DEATHDATE" in indi:
+            ret.append(indi["NAME"])
+    
+    return ret
+
+
 def listMultipleBirths(mydb):
     ret = []
     mycol = mydb["Individuals"]
