@@ -17,6 +17,54 @@ class TestGEDCOMParse(unittest.TestCase):
         print(x)
     for x in printFamilies(mydb):
         print(x)
+    for x in checkBirthBeforeDeath(mydb):
+        print(x)
+    for x in checkMarriageBeforeDivorce(mydb):
+        print(x) 
+    for x in checkMarriageBeforeDeath(mydb):
+        print(x)
+    for x in checkDivorceBeforeDeath(mydb):
+        print(x)
+    for x in checkOver150(mydb):
+        print(x)
+    for x in checkDatesBeforeCurrent(mydb):
+        print(x)
+    for x in checkBirthBeforeMarriageAfterDivorce(mydb):
+        print(x)
+    for x in checkBirthBeforeMarriage(mydb):
+        print(x)
+    for x in checkBirthBeforeDeathOfParents(mydb):
+        print(x)
+    for x in checkMarriageAfterFourteen(mydb):
+        print(x)
+    for x in checkSiblingsBornSame(mydb):
+        print(x)
+    for x in checkSiblingSpacing(mydb):
+        print(x)
+    for x in checkFifteenSiblings(mydb):
+        print(x)
+    for x in checkMaleLastNames(mydb):
+        print(x)
+    for x in checkCorrectGenderRole(mydb):
+        print(x)
+    for x in checkUniqueIds(mydb):
+        print(x)
+    for x in check_UniqueName_and_BirthDate(mydb):
+        print(x)
+    for x in check_UniqueFamily_and_MarriageDate(mydb):
+        print(x)
+    for x in check_aunt_uncle_nephew_niece(mydb):
+        print(x)
+    for x in check_first_cousins_marriage(mydb):
+        print(x)
+    for x in checkMarriageDescendants(mydb):
+        print(x)
+    for x in checkMarriageSibling(mydb):
+        print(x)
+    for x in listMultipleBirths(mydb):
+        print(x)
+    for x in listOrphans(mydb):
+        print(x)
 
     def test_checkBirthBeforeDeath(self):
         myclient = pymongo.MongoClient(
