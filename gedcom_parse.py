@@ -2,7 +2,7 @@ from prettytable import PrettyTable
 import pymongo
 from datetime import datetime
 import calendar
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, date
 from dateutil.relativedelta import relativedelta
 
 
@@ -836,6 +836,58 @@ def listOrphans(mydb):
                     ret.append("Anomoly: in family " + fam + ", " + doc["id"] + " is an orphan")
     return ret
 
+def checkAgeGap(mydb):
+    return_list = []
+    families = mydb["Families"]
+    individuals = mydb["Individuals"]
+    cursor = families.find({})
+    for doc in cursor:
+        husband_bday = datetime.strptime( (individuals.find_one({"id":doc["HUSB"]}))["BIRTHDATE"] , '%d %b %Y').date()
+        wife_bday = datetime.strptime( (individuals.find_one({"id":doc["WIFE"]}))["BIRTHDATE"] , '%d %b %Y').date()
+        marriage_date = datetime.strptime( doc["DATE"] , '%d %b %Y').date()
+        # find ages on marriage date (in seconds)
+        husband_age = (marriage_date - husband_bday).total_seconds()
+        wife_age = (marriage_date - wife_bday).total_seconds()
+        older_spouse, younger_spouse = max(husband_age, wife_age), min(husband_age, wife_age)
+        # compare ages on marriage date and see if older spouse lived more than twice as long 
+        if (older_spouse > (2 * younger_spouse)):
+            return_list.append(doc["id"])
+    return "Couples where the older spouse was more than twice the age of the younger spouse: " + str(return_list)
+
+def checkRecentBirths(mydb):
+    return_list = []
+    individuals = mydb["Individuals"]
+    cursor = individuals.find({})
+    for doc in cursor:
+        birthday = datetime.strptime( doc["BIRTHDATE"] , '%d %b %Y').date()
+        today = date.today()
+        thirty_days_ago = today - timedelta(days=30)
+        # check if birthday is within 30 days from today (after thirty days ago and not after today)
+        if (birthday > thirty_days_ago and birthday <= today):
+            return_list.append(doc['id'])
+    return "People born in the last 30 days: " + str(return_list)
+
+def checkLivingMarried(mydb):
+    return_list = []
+    individuals = mydb["Individuals"]
+    cursor = individuals.find({})
+    for doc in cursor:
+        if not("DEATHDATE" in doc) and "FAMS" in doc:
+            return_list.append(doc["id"])
+    return "Living married people: " + str(return_list)
+
+def checkLivingSingle(mydb):
+    return_list = []
+    individuals = mydb["Individuals"]
+    cursor = individuals.find({})
+    for doc in cursor:
+        if not("DEATHDATE" in doc) and not("FAMS" in doc):
+            today = date.today()
+            birthday = datetime.strptime( doc["BIRTHDATE"] , '%d %b %Y').date()
+            age = today.year - birthday.year - ((today.month, today.day) < (birthday.month, birthday.day))
+            if (age > 30):
+                return_list.append(doc["id"])
+    return "Living single people over 30: " + str(return_list)
+
 
 # readGEDCOM('Christian_Huang_Tree.ged', mydb)
-listOrphans(mydb)
