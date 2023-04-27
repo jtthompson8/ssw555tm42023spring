@@ -1,7 +1,7 @@
 import unittest
 from datetime import datetime
 import pymongo
-from gedcom_parse import readGEDCOM, printIndividuals, printFamilies, checkBirthBeforeDeath, checkMarriageBeforeDivorce, checkMarriageBeforeDeath, checkDivorceBeforeDeath, checkOver150, checkDatesBeforeCurrent, checkBirthBeforeMarriageAfterDivorce, checkBirthBeforeMarriage, checkBirthBeforeDeathOfParents, checkMarriageAfterFourteen, checkSiblingsBornSame, checkSiblingSpacing, checkFifteenSiblings, checkMaleLastNames, checkCorrectGenderRole, checkUniqueIds, check_UniqueName_and_BirthDate, check_UniqueFamily_and_MarriageDate, check_aunt_uncle_nephew_niece, check_first_cousins_marriage, checkMarriageDescendants, checkMarriageSibling, listMultipleBirths, listOrphans
+from gedcom_parse import readGEDCOM, printIndividuals, printFamilies, checkBirthBeforeDeath, checkMarriageBeforeDivorce, checkMarriageBeforeDeath, checkDivorceBeforeDeath, checkOver150, checkDatesBeforeCurrent, checkBirthBeforeMarriageAfterDivorce, checkBirthBeforeMarriage, checkBirthBeforeDeathOfParents, checkMarriageAfterFourteen, checkSiblingsBornSame, checkSiblingSpacing, checkFifteenSiblings, checkMaleLastNames, checkCorrectGenderRole, checkUniqueIds, check_UniqueName_and_BirthDate, check_UniqueFamily_and_MarriageDate, check_aunt_uncle_nephew_niece, check_first_cousins_marriage, checkMarriageDescendants, checkMarriageSibling, listMultipleBirths, listOrphans, checkAgeGap, checkRecentBirths, checkLivingMarried, checkLivingSingle
 
 
 class TestGEDCOMParse(unittest.TestCase):
@@ -244,6 +244,39 @@ class TestGEDCOMParse(unittest.TestCase):
         res = ['Anomoly: in family @F7@, @I37@ is an orphan']
         self.assertEqual(listOrphans(mydb), res,
                          'result does not match expected result for list oprhans')
+        
+
+    def test_checkAgeGap(self):
+        myclient = pymongo.MongoClient(
+            "mongodb://localhost:27017")
+        mydb = myclient["db"]
+        res = "Couples where the older spouse was more than twice the age of the younger spouse: ['@F5@']"
+        self.assertEqual(checkAgeGap(mydb), res,
+                            'result does not match expected result for age gap list')
+        
+    def test_checkRecentBirths(self):
+        myclient = pymongo.MongoClient(
+            "mongodb://localhost:27017")
+        mydb = myclient["db"]
+        res = "People born in the last 30 days: []"
+        self.assertEqual(checkRecentBirths(mydb), res,
+                            'result does not match expected result for recent births list')
+        
+    def test_checkLivingMarried(self):
+        myclient = pymongo.MongoClient(
+            "mongodb://localhost:27017")
+        mydb = myclient["db"]
+        res = "Living married people: ['@I3@', '@I4@', '@I5@', '@I6@', '@I7@', '@I8@']"
+        self.assertEqual(checkLivingMarried(mydb), res,
+                            'result does not match expected result for living married people list')
+        
+    def test_checkLivingSingle(self):
+        myclient = pymongo.MongoClient(
+            "mongodb://localhost:27017")
+        mydb = myclient["db"]
+        res = "Living single people over 30: ['@I9@', '@I10@', '@I11@', '@I16@', '@I17@', '@I18@', '@I19@', '@I20@', '@I21@', '@I22@', '@I23@', '@I24@', '@I38@', '@I40@', '@I38@']"
+        self.assertEqual(checkLivingSingle(mydb), res,
+                            'result does not match expected result for living single people list')
 
 
 
