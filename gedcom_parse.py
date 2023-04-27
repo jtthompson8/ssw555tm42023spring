@@ -860,7 +860,6 @@ def listOrphans(mydb):
             fam = doc["FAMC"]
             birthDate = datetime.strptime(doc['BIRTHDATE'], '%d %b %Y').date()
             if abs(relativedelta(birthDate, datetime.strptime("4 APR 2023", '%d %b %Y').date()).years) < 18: 
-                print(doc["id"])
                 famDoc = mycol2.find_one({'id': fam})
                 hubDoc = mycol.find_one({'id': famDoc["HUSB"]})
                 wifDoc = mycol.find_one({'id': famDoc["WIFE"]})

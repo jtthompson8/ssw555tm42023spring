@@ -53,10 +53,6 @@ class TestGEDCOMParse(unittest.TestCase):
         print(x)
     for x in check_UniqueFamily_and_MarriageDate(mydb):
         print(x)
-    for x in check_aunt_uncle_nephew_niece(mydb):
-        print(x)
-    for x in check_first_cousins_marriage(mydb):
-        print(x)
     for x in checkMarriageDescendants(mydb):
         print(x)
     for x in checkMarriageSibling(mydb):
