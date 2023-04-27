@@ -826,7 +826,6 @@ def listOrphans(mydb):
         if "FAMC" in doc:
             fam = doc["FAMC"]
             birthDate = datetime.strptime(doc['BIRTHDATE'], '%d %b %Y').date()
-            print(abs(relativedelta(birthDate, datetime.strptime("4 APR 2023", '%d %b %Y').date()).years))
             if abs(relativedelta(birthDate, datetime.strptime("4 APR 2023", '%d %b %Y').date()).years) < 18: 
                 print(doc["id"])
                 famDoc = mycol2.find_one({'id': fam})
@@ -891,3 +890,4 @@ def checkLivingSingle(mydb):
 
 
 # readGEDCOM('Christian_Huang_Tree.ged', mydb)
+listOrphans(mydb)

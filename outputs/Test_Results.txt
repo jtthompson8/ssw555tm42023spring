@@ -1,0 +1,285 @@
+Individuals
++-------+----------------------+--------+-------------+-----+------+------------+-------+--------+
+|   ID  |         Name         | Gender |   Birthday  | Age | Dead |   Death    | Child | Spouse |
++-------+----------------------+--------+-------------+-----+------+------------+-------+--------+
+|  @I1@ |  Miriam /MartÃ­nez/  |   M    |  4 AUG 1918 |  -1 |  Y   | 3 JUN 1917 |  N/A  |  @F1@  |
+|  @I2@ |  Carlos /Salamanca/  |   F    |  7 JUL 1820 | 180 |  Y   | 8 JUL 2000 |  N/A  |  @F1@  |
+|  @I3@ |  Hector /Salamanca/  |   M    |  6 MAY 1939 |  84 |  N   |    N/A     |  @F1@ |  @F2@  |
+|  @I4@ |    Skylar /White/    |   F    |  4 JUN 1930 |  93 |  N   |    N/A     |  N/A  |  @F2@  |
+|  @I5@ | Eduardo /Salamanca/  |   M    |  5 JUN 1945 |  78 |  N   |    N/A     |  @F1@ |  @F4@  |
+|  @I6@ |   Jane /Margolis/    |   F    |  3 JUN 1946 |  77 |  N   |    N/A     |  N/A  |  @F3@  |
+|  @I7@ |  Marco /Salamanca/   |   M    |  5 MAY 1942 |  81 |  N   |    N/A     |  @F1@ |  @F6@  |
+|  @I8@ |   Marie /Schrader/   |   F    |  5 JUN 2090 | -67 |  N   |    N/A     |  N/A  |  @F5@  |
+|  @I9@ |   Tuco /Salamanca/   |   M    |  4 JUL 1969 |  54 |  N   |    N/A     |  @F2@ |  N/A   |
+| @I10@ |  Gonzo /Salamanca/   |   M    |  6 JUL 1970 |  53 |  N   |    N/A     |  @F2@ |  N/A   |
+| @I11@ |   Lalo /Salamanca/   |   M    |  6 MAY 1970 |  53 |  N   |    N/A     |  @F5@ |  N/A   |
+| @I12@ | Gretchen /Salamanca/ |   F    |  5 AUG 1971 |  51 |  Y   | 3 JUN 2022 |  @F3@ |  @F7@  |
+| @I13@ |    Walter /White/    |   M    |  7 SEP 1972 |  50 |  Y   | 3 JUN 2022 |  N/A  |  @F7@  |
+| @I14@ |  Andrea /Cantillo/   |   F    |  9 APR 1942 |  27 |  Y   | 7 JUL 1969 |  N/A  |  @F6@  |
+| @I15@ |  Francesca /Liddy/   |   F    |  7 JUN 1944 |  56 |  Y   | 5 JUN 2000 |  N/A  |  @F4@  |
+| @I16@ |  Leonel /Salamanca/  |   M    |  5 JUL 1961 |  62 |  N   |    N/A     |  @F4@ |  N/A   |
+| @I17@ |  Lennie /Salamanca/  |   M    |  5 JUL 1961 |  62 |  N   |    N/A     |  @F4@ |  N/A   |
+| @I18@ |   Bill /Salamanca/   |   M    |  5 JUL 1961 |  62 |  N   |    N/A     |  @F4@ |  N/A   |
+| @I19@ |   Dan /Salamanca/    |   M    |  5 JUL 1961 |  62 |  N   |    N/A     |  @F4@ |  N/A   |
+| @I20@ |   Amit /Salamanca/   |   M    |  5 JUL 1961 |  62 |  N   |    N/A     |  @F4@ |  N/A   |
+| @I21@ | Brendan /Salamanca/  |   M    |  5 JUL 1961 |  62 |  N   |    N/A     |  @F4@ |  N/A   |
+| @I22@ |  Marcos /Salamanca/  |   M    |  5 OCT 1961 |  62 |  N   |    N/A     |  @F4@ |  N/A   |
+| @I23@ |    Child1 /White/    |   M    |  1 JAN 1991 |  32 |  N   |    N/A     |  @F7@ |  N/A   |
+| @I24@ |    Child2 /White/    |   F    |  1 JAN 1992 |  31 |  N   |    N/A     |  @F7@ |  N/A   |
+| @I25@ |    Child3 /White/    |   F    | 10 JAN 1993 |  30 |  N   |    N/A     |  @F7@ |  N/A   |
+| @I26@ |    Child4 /White/    |   M    |  1 JAN 1994 |  29 |  N   |    N/A     |  @F7@ |  N/A   |
+| @I27@ |    Child5 /White/    |   M    |  1 JAN 1995 |  28 |  N   |    N/A     |  @F7@ |  N/A   |
+| @I28@ |    Child6 /White/    |   F    | 10 JAN 1996 |  27 |  N   |    N/A     |  @F7@ |  N/A   |
+| @I29@ |    Child7 /White/    |   M    |  1 JAN 1997 |  26 |  N   |    N/A     |  @F7@ |  N/A   |
+| @I30@ |    Child8 /White/    |   M    |  1 JAN 1998 |  25 |  N   |    N/A     |  @F7@ |  N/A   |
+| @I31@ |    Child9 /Smith/    |   M    |  1 JAN 1999 |  24 |  N   |    N/A     |  @F7@ |  N/A   |
+| @I32@ |   Child10 /White/    |   F    | 10 JAN 2000 |  23 |  N   |    N/A     |  @F7@ |  N/A   |
+| @I33@ |   Child11 /White/    |   F    | 10 JAN 2001 |  22 |  N   |    N/A     |  @F7@ |  N/A   |
+| @I34@ |   Child12 /White/    |   M    | 10 JAN 2002 |  21 |  N   |    N/A     |  @F7@ |  N/A   |
+| @I35@ |   Child13 /White/    |   M    |  1 JAN 2003 |  20 |  N   |    N/A     |  @F7@ |  N/A   |
+| @I36@ |   Child14 /White/    |   F    | 10 JAN 2004 |  19 |  N   |    N/A     |  @F7@ |  N/A   |
+| @I37@ |   Child15 /White/    |   M    | 11 JAN 2006 |  17 |  N   |    N/A     |  @F7@ |  N/A   |
+| @I38@ |     Dave /White/     |   M    | 11 JAN 1990 |  33 |  N   |    N/A     |  @F8@ |  N/A   |
+| @I40@ |     Dave /White/     |   M    | 11 JAN 1990 |  33 |  N   |    N/A     |  N/A  |  N/A   |
+| @I38@ |    Stacy /White/     |   F    | 11 JAN 1990 |  33 |  N   |    N/A     |  @F8@ |  N/A   |
+|  @I1@ |  Miriam /MartÃ­nez/  |   M    |  4 AUG 1918 |  -1 |  Y   | 3 JUN 1917 |  N/A  |  @F1@  |
+|  @I2@ |  Carlos /Salamanca/  |   F    |  7 JUL 1820 | 180 |  Y   | 8 JUL 2000 |  N/A  |  @F1@  |
+|  @I3@ |  Hector /Salamanca/  |   M    |  6 MAY 1939 |  84 |  N   |    N/A     |  @F1@ |  @F2@  |
+|  @I4@ |    Skylar /White/    |   F    |  4 JUN 1930 |  93 |  N   |    N/A     |  N/A  |  @F2@  |
+|  @I5@ | Eduardo /Salamanca/  |   M    |  5 JUN 1945 |  78 |  N   |    N/A     |  @F1@ |  @F4@  |
+|  @I6@ |   Jane /Margolis/    |   F    |  3 JUN 1946 |  77 |  N   |    N/A     |  N/A  |  @F3@  |
+|  @I7@ |  Marco /Salamanca/   |   M    |  5 MAY 1942 |  81 |  N   |    N/A     |  @F1@ |  @F6@  |
+|  @I8@ |   Marie /Schrader/   |   F    |  5 JUN 2090 | -67 |  N   |    N/A     |  N/A  |  @F5@  |
+|  @I9@ |   Tuco /Salamanca/   |   M    |  4 JUL 1969 |  54 |  N   |    N/A     |  @F2@ |  N/A   |
+| @I10@ |  Gonzo /Salamanca/   |   M    |  6 JUL 1970 |  53 |  N   |    N/A     |  @F2@ |  N/A   |
+| @I11@ |   Lalo /Salamanca/   |   M    |  6 MAY 1970 |  53 |  N   |    N/A     |  @F5@ |  N/A   |
+| @I12@ | Gretchen /Salamanca/ |   F    |  5 AUG 1971 |  51 |  Y   | 3 JUN 2022 |  @F3@ |  @F7@  |
+| @I13@ |    Walter /White/    |   M    |  7 SEP 1972 |  50 |  Y   | 3 JUN 2022 |  N/A  |  @F7@  |
+| @I14@ |  Andrea /Cantillo/   |   F    |  9 APR 1942 |  27 |  Y   | 7 JUL 1969 |  N/A  |  @F6@  |
+| @I15@ |  Francesca /Liddy/   |   F    |  7 JUN 1944 |  56 |  Y   | 5 JUN 2000 |  N/A  |  @F4@  |
+| @I16@ |  Leonel /Salamanca/  |   M    |  5 JUL 1961 |  62 |  N   |    N/A     |  @F4@ |  N/A   |
+| @I17@ |  Lennie /Salamanca/  |   M    |  5 JUL 1961 |  62 |  N   |    N/A     |  @F4@ |  N/A   |
+| @I18@ |   Bill /Salamanca/   |   M    |  5 JUL 1961 |  62 |  N   |    N/A     |  @F4@ |  N/A   |
+| @I19@ |   Dan /Salamanca/    |   M    |  5 JUL 1961 |  62 |  N   |    N/A     |  @F4@ |  N/A   |
+| @I20@ |   Amit /Salamanca/   |   M    |  5 JUL 1961 |  62 |  N   |    N/A     |  @F4@ |  N/A   |
+| @I21@ | Brendan /Salamanca/  |   M    |  5 JUL 1961 |  62 |  N   |    N/A     |  @F4@ |  N/A   |
+| @I22@ |  Marcos /Salamanca/  |   M    |  5 OCT 1961 |  62 |  N   |    N/A     |  @F4@ |  N/A   |
+| @I23@ |    Child1 /White/    |   M    |  1 JAN 1991 |  32 |  N   |    N/A     |  @F7@ |  N/A   |
+| @I24@ |    Child2 /White/    |   F    |  1 JAN 1992 |  31 |  N   |    N/A     |  @F7@ |  N/A   |
+| @I25@ |    Child3 /White/    |   F    | 10 JAN 1993 |  30 |  N   |    N/A     |  @F7@ |  N/A   |
+| @I26@ |    Child4 /White/    |   M    |  1 JAN 1994 |  29 |  N   |    N/A     |  @F7@ |  N/A   |
+| @I27@ |    Child5 /White/    |   M    |  1 JAN 1995 |  28 |  N   |    N/A     |  @F7@ |  N/A   |
+| @I28@ |    Child6 /White/    |   F    | 10 JAN 1996 |  27 |  N   |    N/A     |  @F7@ |  N/A   |
+| @I29@ |    Child7 /White/    |   M    |  1 JAN 1997 |  26 |  N   |    N/A     |  @F7@ |  N/A   |
+| @I30@ |    Child8 /White/    |   M    |  1 JAN 1998 |  25 |  N   |    N/A     |  @F7@ |  N/A   |
+| @I31@ |    Child9 /Smith/    |   M    |  1 JAN 1999 |  24 |  N   |    N/A     |  @F7@ |  N/A   |
+| @I32@ |   Child10 /White/    |   F    | 10 JAN 2000 |  23 |  N   |    N/A     |  @F7@ |  N/A   |
+| @I33@ |   Child11 /White/    |   F    | 10 JAN 2001 |  22 |  N   |    N/A     |  @F7@ |  N/A   |
+| @I34@ |   Child12 /White/    |   M    | 10 JAN 2002 |  21 |  N   |    N/A     |  @F7@ |  N/A   |
+| @I35@ |   Child13 /White/    |   M    |  1 JAN 2003 |  20 |  N   |    N/A     |  @F7@ |  N/A   |
+| @I36@ |   Child14 /White/    |   F    | 10 JAN 2004 |  19 |  N   |    N/A     |  @F7@ |  N/A   |
+| @I37@ |   Child15 /White/    |   M    | 11 JAN 2006 |  17 |  N   |    N/A     |  @F7@ |  N/A   |
+| @I38@ |     Dave /White/     |   M    | 11 JAN 1990 |  33 |  N   |    N/A     |  @F8@ |  N/A   |
+| @I40@ |     Dave /White/     |   M    | 11 JAN 1990 |  33 |  N   |    N/A     |  N/A  |  N/A   |
+| @I38@ |    Stacy /White/     |   F    | 11 JAN 1990 |  33 |  N   |    N/A     |  @F8@ |  N/A   |
++-------+----------------------+--------+-------------+-----+------+------------+-------+--------+
+Families
++------+-------------+------------+------------+--------+-----------------------------------------------------------------------------------------------------------------------------------------+
+|  ID  |   Married   |  Divorced  | Husband ID | Wif ID |                                                                 Children                                                                |
++------+-------------+------------+------------+--------+-----------------------------------------------------------------------------------------------------------------------------------------+
+| @F1@ |  6 MAY 2020 | 8 APR 1900 |    @I2@    |  @I1@  |                                                         ['@I3@', '@I5@', '@I7@']                                                        |
+| @F2@ |  4 MAY 1959 |    N/A     |    @I3@    |  @I4@  |                                                            ['@I9@', '@I10@']                                                            |
+| @F3@ | 11 MAR 1972 |    N/A     |    @I5@    |  @I6@  |                                                                ['@I12@']                                                                |
+| @F4@ |  4 MAY 1960 | 8 APR 2020 |    @I5@    | @I15@  |                                     ['@I16@', '@I17@', '@I18@', '@I19@', '@I20@', '@I21@', '@I22@']                                     |
+| @F5@ |  5 JUN 1970 |    N/A     |    @I7@    |  @I8@  |                                                                ['@I11@']                                                                |
+| @F6@ |  6 JUN 1969 |    N/A     |    @I7@    | @I14@  |                                                                   N/A                                                                   |
+| @F7@ |  6 AUG 1990 |    N/A     |   @I13@    | @I12@  | ['@I23@', '@I24@', '@I25@', '@I26@', '@I27@', '@I28@', '@I29@', '@I30@', '@I31@', '@I32@', '@I33@', '@I34@', '@I35@', '@I36@', '@I37@'] |
+| @F8@ |  6 AUG 2012 |    N/A     |   @I38@    | @I38@  |                                                                   N/A                                                                   |
+| @F8@ |  6 AUG 2012 |    N/A     |   @I38@    | @I38@  |                                                                   N/A                                                                   |
+| @F1@ |  6 MAY 2020 | 8 APR 1900 |    @I2@    |  @I1@  |                                                         ['@I3@', '@I5@', '@I7@']                                                        |
+| @F2@ |  4 MAY 1959 |    N/A     |    @I3@    |  @I4@  |                                                            ['@I9@', '@I10@']                                                            |
+| @F3@ | 11 MAR 1972 |    N/A     |    @I5@    |  @I6@  |                                                                ['@I12@']                                                                |
+| @F4@ |  4 MAY 1960 | 8 APR 2020 |    @I5@    | @I15@  |                                     ['@I16@', '@I17@', '@I18@', '@I19@', '@I20@', '@I21@', '@I22@']                                     |
+| @F5@ |  5 JUN 1970 |    N/A     |    @I7@    |  @I8@  |                                                                ['@I11@']                                                                |
+| @F6@ |  6 JUN 1969 |    N/A     |    @I7@    | @I14@  |                                                                   N/A                                                                   |
+| @F7@ |  6 AUG 1990 |    N/A     |   @I13@    | @I12@  | ['@I23@', '@I24@', '@I25@', '@I26@', '@I27@', '@I28@', '@I29@', '@I30@', '@I31@', '@I32@', '@I33@', '@I34@', '@I35@', '@I36@', '@I37@'] |
+| @F8@ |  6 AUG 2012 |    N/A     |   @I38@    | @I38@  |                                                                   N/A                                                                   |
+| @F8@ |  6 AUG 2012 |    N/A     |   @I38@    | @I38@  |                                                                   N/A                                                                   |
++------+-------------+------------+------------+--------+-----------------------------------------------------------------------------------------------------------------------------------------+
+Error @F1@: Birth date of Miriam /MartÃ­nez/@I1@ occurs after their death date.
+Error @F1@: Birth date of Miriam /MartÃ­nez/@I1@ occurs after their death date.
+Error @F1@: Marriage date of Miriam /MartÃ­nez/ and Carlos /Salamanca/ occurs after their divorce date.
+Error @F1@: Marriage date of Miriam /MartÃ­nez/ and Carlos /Salamanca/ occurs after their divorce date.
+Error @F1@:Marriage date of Carlos /Salamanca/ (@I2@) occurs after his death date.
+Error @F1@:Marriage date of Miriam /MartÃ­nez/ (@I1@) occurs after her death date.
+Error @F1@:Marriage date of Carlos /Salamanca/ (@I2@) occurs after his death date.
+Error @F1@:Marriage date of Miriam /MartÃ­nez/ (@I1@) occurs after her death date.
+Error @F4@:Divorce date of Francesca /Liddy/ (@I15@) occurs after her death date.
+Error @F4@:Divorce date of Francesca /Liddy/ (@I15@) occurs after her death date.
+Anomaly @F1@: Death date of Carlos /Salamanca/@I2@ occurs  150 (or more) years after their birth date
+Anomaly @F1@: Death date of Carlos /Salamanca/@I2@ occurs  150 (or more) years after their birth date
+Error @I8@: Birth date of Marie /Schrader/ occurs after the current date.
+Error @I8@: Birth date of Marie /Schrader/ occurs after the current date.
+Anomaly @F1@: Hector /Salamanca/@I3@ was born before the marriage of marriage of their parents
+Anomaly @F1@: Eduardo /Salamanca/@I5@ was born before the marriage of marriage of their parents
+Anomaly @F1@: Marco /Salamanca/@I7@ was born before the marriage of marriage of their parents
+Anomaly @F5@: Lalo /Salamanca/@I11@ was born before the marriage of marriage of their parents
+Anomaly @F3@: Gretchen /Salamanca/@I12@ was born before the marriage of marriage of their parents
+Anomaly @F4@: Leonel /Salamanca/@I16@ was born 9 months after the divorce of his parents
+Anomaly @F4@: Lennie /Salamanca/@I17@ was born 9 months after the divorce of his parents
+Anomaly @F4@: Bill /Salamanca/@I18@ was born 9 months after the divorce of his parents
+Anomaly @F4@: Dan /Salamanca/@I19@ was born 9 months after the divorce of his parents
+Anomaly @F4@: Amit /Salamanca/@I20@ was born 9 months after the divorce of his parents
+Anomaly @F4@: Brendan /Salamanca/@I21@ was born 9 months after the divorce of his parents
+Anomaly @F8@: Dave /White/@I38@ was born before the marriage of marriage of their parents
+Anomaly @F8@: Stacy /White/@I38@ was born before the marriage of marriage of their parents
+Anomaly @F1@: Hector /Salamanca/@I3@ was born before the marriage of marriage of their parents
+Anomaly @F1@: Eduardo /Salamanca/@I5@ was born before the marriage of marriage of their parents
+Anomaly @F1@: Marco /Salamanca/@I7@ was born before the marriage of marriage of their parents
+Anomaly @F5@: Lalo /Salamanca/@I11@ was born before the marriage of marriage of their parents
+Anomaly @F3@: Gretchen /Salamanca/@I12@ was born before the marriage of marriage of their parents
+Anomaly @F4@: Leonel /Salamanca/@I16@ was born 9 months after the divorce of his parents
+Anomaly @F4@: Lennie /Salamanca/@I17@ was born 9 months after the divorce of his parents
+Anomaly @F4@: Bill /Salamanca/@I18@ was born 9 months after the divorce of his parents
+Anomaly @F4@: Dan /Salamanca/@I19@ was born 9 months after the divorce of his parents
+Anomaly @F4@: Amit /Salamanca/@I20@ was born 9 months after the divorce of his parents
+Anomaly @F4@: Brendan /Salamanca/@I21@ was born 9 months after the divorce of his parents
+Anomaly @F8@: Dave /White/@I38@ was born before the marriage of marriage of their parents
+Anomaly @F8@: Stacy /White/@I38@ was born before the marriage of marriage of their parents
+Error @F5@:Marriage date of Marie /Schrader/ (@I8@) occurs before her birth.
+Error @F5@:Marriage date of Marie /Schrader/ (@I8@) occurs before her birth.
+Error @I3@: Death of Miriam /MartÃ­nez/@I1@ occurs before her child was born.
+Error @I5@: Death of Miriam /MartÃ­nez/@I1@ occurs before her child was born.
+Error @I7@: Death of Miriam /MartÃ­nez/@I1@ occurs before her child was born.
+Error @I3@: Death of Miriam /MartÃ­nez/@I1@ occurs before her child was born.
+Error @I5@: Death of Miriam /MartÃ­nez/@I1@ occurs before her child was born.
+Error @I7@: Death of Miriam /MartÃ­nez/@I1@ occurs before her child was born.
+Error @F4@: Eduardo /Salamanca/ married before turning 14
+Error @F4@: Eduardo /Salamanca/ married before turning 14
+Anomaly in @F4@ there are 6 children with the birthday of 5 JUL 1961
+Anomaly in @F4@ there are 6 children with the birthday of 5 JUL 1961
+Anomaly in @F4@ child @I16@ and child @I22@ have birthdays within 92 days
+Anomaly in @F4@ child @I17@ and child @I22@ have birthdays within 92 days
+Anomaly in @F4@ child @I18@ and child @I22@ have birthdays within 92 days
+Anomaly in @F4@ child @I19@ and child @I22@ have birthdays within 92 days
+Anomaly in @F4@ child @I20@ and child @I22@ have birthdays within 92 days
+Anomaly in @F4@ child @I21@ and child @I22@ have birthdays within 92 days
+Anomaly in @F4@ child @I16@ and child @I22@ have birthdays within 92 days
+Anomaly in @F4@ child @I17@ and child @I22@ have birthdays within 92 days
+Anomaly in @F4@ child @I18@ and child @I22@ have birthdays within 92 days
+Anomaly in @F4@ child @I19@ and child @I22@ have birthdays within 92 days
+Anomaly in @F4@ child @I20@ and child @I22@ have birthdays within 92 days
+Anomaly in @F4@ child @I21@ and child @I22@ have birthdays within 92 days
+Anomaly @F7@: Family has 15 or more siblings
+Anomaly @F7@: Family has 15 or more siblings
+Error @F7@: Child9 /Smith/ @I31@ has a different last name than his father Walter /White/ @I13@. All male members of a family should have the same last name.
+Error @F7@: Child9 /Smith/ @I31@ has a different last name than his father Walter /White/ @I13@. All male members of a family should have the same last name.
+Anomaly in family @F1@: Husband is not a male (@I2@)
+Anomaly in family @F1@: Wife is not a female (@I1@)
+Anomaly in family @F8@: Wife is not a female (@I38@)
+Anomaly in family @F8@: Wife is not a female (@I38@)
+Anomaly in family @F1@: Husband is not a male (@I2@)
+Anomaly in family @F1@: Wife is not a female (@I1@)
+Anomaly in family @F8@: Wife is not a female (@I38@)
+Anomaly in family @F8@: Wife is not a female (@I38@)
+Anomaly: @F8@ is repeated (not unique)
+Anomaly: @F1@ is repeated (not unique)
+Anomaly: @F2@ is repeated (not unique)
+Anomaly: @F3@ is repeated (not unique)
+Anomaly: @F4@ is repeated (not unique)
+Anomaly: @F5@ is repeated (not unique)
+Anomaly: @F6@ is repeated (not unique)
+Anomaly: @F7@ is repeated (not unique)
+Anomaly: @F8@ is repeated (not unique)
+Anomaly: @F8@ is repeated (not unique)
+Anomaly: @I38@ is repeated (not unique)
+Anomaly: @I1@ is repeated (not unique)
+Anomaly: @I2@ is repeated (not unique)
+Anomaly: @I3@ is repeated (not unique)
+Anomaly: @I4@ is repeated (not unique)
+Anomaly: @I5@ is repeated (not unique)
+Anomaly: @I6@ is repeated (not unique)
+Anomaly: @I7@ is repeated (not unique)
+Anomaly: @I8@ is repeated (not unique)
+Anomaly: @I9@ is repeated (not unique)
+Anomaly: @I10@ is repeated (not unique)
+Anomaly: @I11@ is repeated (not unique)
+Anomaly: @I12@ is repeated (not unique)
+Anomaly: @I13@ is repeated (not unique)
+Anomaly: @I14@ is repeated (not unique)
+Anomaly: @I15@ is repeated (not unique)
+Anomaly: @I16@ is repeated (not unique)
+Anomaly: @I17@ is repeated (not unique)
+Anomaly: @I18@ is repeated (not unique)
+Anomaly: @I19@ is repeated (not unique)
+Anomaly: @I20@ is repeated (not unique)
+Anomaly: @I21@ is repeated (not unique)
+Anomaly: @I22@ is repeated (not unique)
+Anomaly: @I23@ is repeated (not unique)
+Anomaly: @I24@ is repeated (not unique)
+Anomaly: @I25@ is repeated (not unique)
+Anomaly: @I26@ is repeated (not unique)
+Anomaly: @I27@ is repeated (not unique)
+Anomaly: @I28@ is repeated (not unique)
+Anomaly: @I29@ is repeated (not unique)
+Anomaly: @I30@ is repeated (not unique)
+Anomaly: @I31@ is repeated (not unique)
+Anomaly: @I32@ is repeated (not unique)
+Anomaly: @I33@ is repeated (not unique)
+Anomaly: @I34@ is repeated (not unique)
+Anomaly: @I35@ is repeated (not unique)
+Anomaly: @I36@ is repeated (not unique)
+Anomaly: @I37@ is repeated (not unique)
+Anomaly: @I38@ is repeated (not unique)
+Anomaly: @I40@ is repeated (not unique)
+Anomaly: @I38@ is repeated (not unique)
+Anomaly: Dave /White/ with a birth date of 11 JAN 1990 appears more than once.
+Anomaly: Miriam /MartÃ­nez/ with a birth date of 4 AUG 1918 appears more than once.
+Anomaly: Carlos /Salamanca/ with a birth date of 7 JUL 1820 appears more than once.
+Anomaly: Hector /Salamanca/ with a birth date of 6 MAY 1939 appears more than once.
+Anomaly: Skylar /White/ with a birth date of 4 JUN 1930 appears more than once.
+Anomaly: Eduardo /Salamanca/ with a birth date of 5 JUN 1945 appears more than once.
+Anomaly: Jane /Margolis/ with a birth date of 3 JUN 1946 appears more than once.
+Anomaly: Marco /Salamanca/ with a birth date of 5 MAY 1942 appears more than once.
+Anomaly: Marie /Schrader/ with a birth date of 5 JUN 2090 appears more than once.
+Anomaly: Tuco /Salamanca/ with a birth date of 4 JUL 1969 appears more than once.
+Anomaly: Gonzo /Salamanca/ with a birth date of 6 JUL 1970 appears more than once.
+Anomaly: Lalo /Salamanca/ with a birth date of 6 MAY 1970 appears more than once.
+Anomaly: Gretchen /Salamanca/ with a birth date of 5 AUG 1971 appears more than once.
+Anomaly: Walter /White/ with a birth date of 7 SEP 1972 appears more than once.
+Anomaly: Andrea /Cantillo/ with a birth date of 9 APR 1942 appears more than once.
+Anomaly: Francesca /Liddy/ with a birth date of 7 JUN 1944 appears more than once.
+Anomaly: Leonel /Salamanca/ with a birth date of 5 JUL 1961 appears more than once.
+Anomaly: Lennie /Salamanca/ with a birth date of 5 JUL 1961 appears more than once.
+Anomaly: Bill /Salamanca/ with a birth date of 5 JUL 1961 appears more than once.
+Anomaly: Dan /Salamanca/ with a birth date of 5 JUL 1961 appears more than once.
+Anomaly: Amit /Salamanca/ with a birth date of 5 JUL 1961 appears more than once.
+Anomaly: Brendan /Salamanca/ with a birth date of 5 JUL 1961 appears more than once.
+Anomaly: Marcos /Salamanca/ with a birth date of 5 OCT 1961 appears more than once.
+Anomaly: Child1 /White/ with a birth date of 1 JAN 1991 appears more than once.
+Anomaly: Child2 /White/ with a birth date of 1 JAN 1992 appears more than once.
+Anomaly: Child3 /White/ with a birth date of 10 JAN 1993 appears more than once.
+Anomaly: Child4 /White/ with a birth date of 1 JAN 1994 appears more than once.
+Anomaly: Child5 /White/ with a birth date of 1 JAN 1995 appears more than once.
+Anomaly: Child6 /White/ with a birth date of 10 JAN 1996 appears more than once.
+Anomaly: Child7 /White/ with a birth date of 1 JAN 1997 appears more than once.
+Anomaly: Child8 /White/ with a birth date of 1 JAN 1998 appears more than once.
+Anomaly: Child9 /Smith/ with a birth date of 1 JAN 1999 appears more than once.
+Anomaly: Child10 /White/ with a birth date of 10 JAN 2000 appears more than once.
+Anomaly: Child11 /White/ with a birth date of 10 JAN 2001 appears more than once.
+Anomaly: Child12 /White/ with a birth date of 10 JAN 2002 appears more than once.
+Anomaly: Child13 /White/ with a birth date of 1 JAN 2003 appears more than once.
+Anomaly: Child14 /White/ with a birth date of 10 JAN 2004 appears more than once.
+Anomaly: Child15 /White/ with a birth date of 11 JAN 2006 appears more than once.
+Anomaly: Dave /White/ with a birth date of 11 JAN 1990 appears more than once.
+Anomaly: Stacy /White/ with a birth date of 11 JAN 1990 appears more than once.
+Anomaly: Family with the spouses Dave /White/ and Dave /White/ with a marriage date of 6 AUG 2012 appears more than once.
+Anomaly: Family with the spouses Carlos /Salamanca/ and Miriam /MartÃ­nez/ with a marriage date of 6 MAY 2020 appears more than once.
+Anomaly: Family with the spouses Hector /Salamanca/ and Skylar /White/ with a marriage date of 4 MAY 1959 appears more than once.
+Anomaly: Family with the spouses Eduardo /Salamanca/ and Jane /Margolis/ with a marriage date of 11 MAR 1972 appears more than once.
+Anomaly: Family with the spouses Eduardo /Salamanca/ and Francesca /Liddy/ with a marriage date of 4 MAY 1960 appears more than once.
+Anomaly: Family with the spouses Marco /Salamanca/ and Marie /Schrader/ with a marriage date of 5 JUN 1970 appears more than once.
+Anomaly: Family with the spouses Marco /Salamanca/ and Andrea /Cantillo/ with a marriage date of 6 JUN 1969 appears more than once.
+Anomaly: Family with the spouses Walter /White/ and Gretchen /Salamanca/ with a marriage date of 6 AUG 1990 appears more than once.
+Anomaly: Family with the spouses Dave /White/ and Dave /White/ with a marriage date of 6 AUG 2012 appears more than once.
+Anomaly: Family with the spouses Dave /White/ and Dave /White/ with a marriage date of 6 AUG 2012 appears more than once.
