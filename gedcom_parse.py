@@ -923,4 +923,3 @@ def checkLivingSingle(mydb):
 
 
 # readGEDCOM('Christian_Huang_Tree.ged', mydb)
-listOrphans(mydb)
