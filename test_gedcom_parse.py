@@ -1,7 +1,7 @@
 import unittest
 from datetime import datetime
 import pymongo
-from gedcom_parse import readGEDCOM, printIndividuals, printFamilies, checkBirthBeforeDeath, checkMarriageBeforeDivorce, checkMarriageBeforeDeath, checkDivorceBeforeDeath, checkOver150, checkDatesBeforeCurrent, checkBirthBeforeMarriageAfterDivorce, checkBirthBeforeMarriage, checkBirthBeforeDeathOfParents, checkMarriageAfterFourteen, checkSiblingsBornSame, checkSiblingSpacing, checkFifteenSiblings, checkMaleLastNames, checkCorrectGenderRole, checkUniqueIds, check_UniqueName_and_BirthDate, check_UniqueFamily_and_MarriageDate, check_aunt_uncle_nephew_niece, check_first_cousins_marriage, checkMarriageDescendants, checkMarriageSibling, listMultipleBirths, listOrphans, checkAgeGap, checkRecentBirths, checkLivingMarried, checkLivingSingle
+from gedcom_parse import readGEDCOM, printIndividuals, printFamilies, checkBirthBeforeDeath, checkMarriageBeforeDivorce, checkMarriageBeforeDeath, checkDivorceBeforeDeath, checkOver150, checkDatesBeforeCurrent, checkBirthBeforeMarriageAfterDivorce, checkBirthBeforeMarriage, checkBirthBeforeDeathOfParents, checkMarriageAfterFourteen, checkSiblingsBornSame, checkSiblingSpacing, checkFifteenSiblings, checkMaleLastNames, checkCorrectGenderRole, checkUniqueIds, check_UniqueName_and_BirthDate, check_UniqueFamily_and_MarriageDate, check_aunt_uncle_nephew_niece, check_first_cousins_marriage, checkMarriageDescendants, checkMarriageSibling, listMultipleBirths, listOrphans, checkAgeGap, checkRecentBirths, checkLivingMarried, checkLivingSingle, listDead, listSiblingsByAge,  listDead, listSiblingsByAge
 
 
 class TestGEDCOMParse(unittest.TestCase):
@@ -327,6 +327,38 @@ class TestGEDCOMParse(unittest.TestCase):
                             'result does not match expected result for living single people list')
 
 
+   
+    def testlistDeath(self):
+        myclient = pymongo.MongoClient(
+            "mongodb://localhost:27017")
+        mydb = myclient["db"]
+        res = [
+            "Listing Deceased:",
+            "Miriam /MartÃ\xadnez/",
+            'Carlos /Salamanca/',
+            'Gretchen /Salamanca/',
+            'Walter /White/',
+            'Andrea /Cantillo/',
+            'Francesca /Liddy/'
+            ]
+        self.assertEqual(listDead(mydb), res,
+                         'result does not match expected result for list deaths')
+        
+    def testlistSiblingsByAge(self):
+        myclient = pymongo.MongoClient(
+            "mongodb://localhost:27017")
+        mydb = myclient["db"]
+        res = [
+               "Listing Siblings By Age:",
+               "[('Eduardo /Salamanca/', datetime.datetime(1945, 6, 5, 0, 0)), ('Marco /Salamanca/', datetime.datetime(1942, 5, 5, 0, 0)), ('Hector /Salamanca/', datetime.datetime(1939, 5, 6, 0, 0))]",
+               "[('Gonzo /Salamanca/', datetime.datetime(1970, 7, 6, 0, 0)), ('Tuco /Salamanca/', datetime.datetime(1969, 7, 4, 0, 0))]",
+               "[('Gretchen /Salamanca/', datetime.datetime(1971, 8, 5, 0, 0))]",
+               "[('Marcos /Salamanca/', datetime.datetime(1961, 10, 5, 0, 0)), ('Leonel /Salamanca/', datetime.datetime(1961, 7, 5, 0, 0)), ('Lennie /Salamanca/', datetime.datetime(1961, 7, 5, 0, 0)), ('Bill /Salamanca/', datetime.datetime(1961, 7, 5, 0, 0)), ('Dan /Salamanca/', datetime.datetime(1961, 7, 5, 0, 0)), ('Amit /Salamanca/', datetime.datetime(1961, 7, 5, 0, 0)), ('Brendan /Salamanca/', datetime.datetime(1961, 7, 5, 0, 0))]",
+               "[('Lalo /Salamanca/', datetime.datetime(1970, 5, 6, 0, 0))]",
+               "[('Child15 /White/', datetime.datetime(2006, 1, 11, 0, 0)), ('Child14 /White/', datetime.datetime(2004, 1, 10, 0, 0)), ('Child13 /White/', datetime.datetime(2003, 1, 1, 0, 0)), ('Child12 /White/', datetime.datetime(2002, 1, 10, 0, 0)), ('Child11 /White/', datetime.datetime(2001, 1, 10, 0, 0)), ('Child10 /White/', datetime.datetime(2000, 1, 10, 0, 0)), ('Child9 /Smith/', datetime.datetime(1999, 1, 1, 0, 0)), ('Child8 /White/', datetime.datetime(1998, 1, 1, 0, 0)), ('Child7 /White/', datetime.datetime(1997, 1, 1, 0, 0)), ('Child6 /White/', datetime.datetime(1996, 1, 10, 0, 0)), ('Child5 /White/', datetime.datetime(1995, 1, 1, 0, 0)), ('Child4 /White/', datetime.datetime(1994, 1, 1, 0, 0)), ('Child3 /White/', datetime.datetime(1993, 1, 10, 0, 0)), ('Child2 /White/', datetime.datetime(1992, 1, 1, 0, 0)), ('Child1 /White/', datetime.datetime(1991, 1, 1, 0, 0))]"
+        ]
+        self.assertEqual(listSiblingsByAge(mydb), res,
+                         'result does not match expected result for list siblings by age')
 
 if __name__ == '__main__':
     print('Running unit tests')
